@@ -1,8 +1,6 @@
 # Label Management API
 This project helping in label management for products. Project allows create, edit and print label for different business.
 
----
-
 ## Contents
 * [Install project](#install)
 * [Client repository](#client-repository)
