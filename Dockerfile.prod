@@ -1,4 +1,4 @@
-FROM gradle:8.2.1-jdk17-alpine as builder
+FROM gradle:8.2.1-jdk17-alpine AS builder
 ENV APP_HOME=/app
 WORKDIR $APP_HOME
 COPY build.gradle settings.gradle $APP_HOME
