@@ -14,8 +14,8 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class IntegrationTestConfig {
 
     @Container
-    static MySQLContainer mySQLContainer = new MySQLContainer("mysql:latest")
-            .withDatabaseName("labelapp_test");
+    private static MySQLContainer<?> mySQLContainer = new MySQLContainer<>()
+            .withDatabaseName("labelapp-test");
 
     @DynamicPropertySource
     static void containerConfig(DynamicPropertyRegistry registry) {

@@ -1,6 +1,7 @@
 package pl.krzychuuweb.labelapp.user;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -18,16 +19,17 @@ public class User {
 
     private String password;
 
+    @Column(updatable = false)
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     User() {
     }
 
-    public User(final String email, final String username, final String password, final LocalDateTime createdAt) {
+    public User(final String email, final String username, final String password) {
         this.email = email;
         this.username = username;
         this.password = password;
-        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -72,9 +74,8 @@ public class User {
         private String email;
         private String username;
         private String password;
-        private LocalDateTime createdAt;
 
-        private UserBuilder() {
+        UserBuilder() {
         }
 
         public static UserBuilder anUser() {
@@ -101,17 +102,12 @@ public class User {
             return this;
         }
 
-        public UserBuilder withCreatedAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
         public UserBuilder but() {
-            return anUser().withId(id).withEmail(email).withUsername(username).withPassword(password).withCreatedAt(createdAt);
+            return anUser().withId(id).withEmail(email).withUsername(username).withPassword(password);
         }
 
         public User build() {
-            User user = new User(email, username, password, createdAt);
+            User user = new User(email, username, password);
             user.id = this.id;
             return user;
         }
