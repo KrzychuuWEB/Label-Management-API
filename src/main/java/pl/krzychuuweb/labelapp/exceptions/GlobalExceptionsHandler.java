@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.nio.file.AccessDeniedException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,17 @@ class GlobalExceptionsHandler {
 
         return new ResponseEntity<>(message, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    ResponseEntity<ResponseErrorMessage> handleAccessDeniedException(RuntimeException ex) {
+        ResponseErrorMessage message = new ResponseErrorMessage(
+                ex.getMessage(),
+                HttpStatus.FORBIDDEN
+        );
+
+        return new ResponseEntity<>(message, HttpStatus.FORBIDDEN);
+    }
+
 
     @ExceptionHandler(BadRequestException.class)
     ResponseEntity<ResponseErrorMessage> handleBadRequestException(RuntimeException ex) {

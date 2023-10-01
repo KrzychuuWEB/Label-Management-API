@@ -32,8 +32,8 @@ class UserQueryFacadeImplTest {
     @Test
     void should_get_all_users() {
         ArrayList<User> usersList = new ArrayList<>();
-        usersList.add(User.UserBuilder.anUser().but().withUsername("Username1").withEmail("email1@email.com").withPassword("password1").build());
-        usersList.add(User.UserBuilder.anUser().but().withUsername("Username2").withEmail("email2@email.com").withPassword("password2").build());
+        usersList.add(User.UserBuilder.anUser().withUsername("Username1").withEmail("email1@email.com").withPassword("password1").build());
+        usersList.add(User.UserBuilder.anUser().withUsername("Username2").withEmail("email2@email.com").withPassword("password2").build());
 
         when(userQueryRepository.findAll()).thenReturn(usersList);
 
@@ -44,7 +44,7 @@ class UserQueryFacadeImplTest {
 
     @Test
     void should_get_user_by_email() {
-        User user = User.UserBuilder.anUser().but().withEmail("example@email.com").build();
+        User user = User.UserBuilder.anUser().withEmail("example@email.com").build();
 
         when(userQueryRepository.getByEmail(anyString())).thenReturn(Optional.of(user));
 
@@ -63,7 +63,7 @@ class UserQueryFacadeImplTest {
 
     @Test
     void should_get_user_by_id() {
-        User user = User.UserBuilder.anUser().but().withId(1L).build();
+        User user = User.UserBuilder.anUser().withId(1L).build();
 
         when(userQueryRepository.findById(anyLong())).thenReturn(Optional.of(user));
 

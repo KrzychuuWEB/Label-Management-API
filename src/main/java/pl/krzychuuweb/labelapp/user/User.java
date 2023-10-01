@@ -2,8 +2,11 @@ package pl.krzychuuweb.labelapp.user;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import pl.krzychuuweb.labelapp.company.Company;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -23,13 +26,10 @@ public class User {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    User() {
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Company> companies = new ArrayList<>();
 
-    public User(final String email, final String username, final String password) {
-        this.email = email;
-        this.username = username;
-        this.password = password;
+    User() {
     }
 
     public Long getId() {
@@ -64,8 +64,12 @@ public class User {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
+    public List<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(final List<Company> companies) {
+        this.companies = companies;
     }
 
 
@@ -74,8 +78,10 @@ public class User {
         private String email;
         private String username;
         private String password;
+        private LocalDateTime createdAt;
+        private List<Company> companies;
 
-        UserBuilder() {
+        private UserBuilder() {
         }
 
         public static UserBuilder anUser() {
@@ -102,13 +108,24 @@ public class User {
             return this;
         }
 
-        public UserBuilder but() {
-            return anUser().withId(id).withEmail(email).withUsername(username).withPassword(password);
+        public UserBuilder withCreatedAt(LocalDateTime createdAt) {
+            this.createdAt = createdAt;
+            return this;
+        }
+
+        public UserBuilder withCompanies(List<Company> companies) {
+            this.companies = companies;
+            return this;
         }
 
         public User build() {
-            User user = new User(email, username, password);
+            User user = new User();
+            user.setEmail(email);
+            user.setUsername(username);
+            user.setPassword(password);
+            user.setCompanies(companies);
             user.id = this.id;
+            user.createdAt = this.createdAt;
             return user;
         }
     }

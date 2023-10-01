@@ -42,8 +42,8 @@ class UserControllerIT extends IntegrationTestConfig {
     @Transactional
     void should_get_all_users() throws Exception {
         List<User> users = List.of(
-                User.UserBuilder.anUser().but().withUsername("username1").withPassword("username1").withEmail("usernam1@email.com").build(),
-                User.UserBuilder.anUser().but().withUsername("username2").withPassword("username2").withEmail("usernam2@email.com").build()
+                User.UserBuilder.anUser().withUsername("username1").withPassword("username1").withEmail("usernam1@email.com").build(),
+                User.UserBuilder.anUser().withUsername("username2").withPassword("username2").withEmail("usernam2@email.com").build()
         );
         userRepository.saveAll(users);
 
@@ -89,6 +89,7 @@ class UserControllerIT extends IntegrationTestConfig {
         assertThat(response.email()).isEqualTo(userCreateDTO.email());
         assertThat(response.createdAt()).isBefore(LocalDateTime.now());
     }
+
     @Test
     @Transactional
     void should_create_user_throw_exception_when_username_already_exists() throws Exception {
@@ -155,7 +156,7 @@ class UserControllerIT extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_update_user_throw_exception_when_email_already_exists() throws Exception {
-        UserEditDTO userEditDTO = new UserEditDTO(1L,"username", "taken@email.com");
+        UserEditDTO userEditDTO = new UserEditDTO(1L, "username", "taken@email.com");
         userRepository.save(User.UserBuilder.anUser().withEmail(userEditDTO.email()).build());
 
         mockMvc.perform(put("/users/" + userEditDTO.id())
