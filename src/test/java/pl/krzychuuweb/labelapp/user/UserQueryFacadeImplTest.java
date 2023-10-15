@@ -32,8 +32,8 @@ class UserQueryFacadeImplTest {
     @Test
     void should_get_all_users() {
         ArrayList<User> usersList = new ArrayList<>();
-        usersList.add(User.UserBuilder.anUser().withUsername("Username1").withEmail("email1@email.com").withPassword("password1").build());
-        usersList.add(User.UserBuilder.anUser().withUsername("Username2").withEmail("email2@email.com").withPassword("password2").build());
+        usersList.add(User.UserBuilder.anUser().withFirstName("firstName1").withEmail("email1@email.com").withPassword("password1").build());
+        usersList.add(User.UserBuilder.anUser().withFirstName("firstName2").withEmail("email2@email.com").withPassword("password2").build());
 
         when(userQueryRepository.findAll()).thenReturn(usersList);
 
@@ -78,22 +78,6 @@ class UserQueryFacadeImplTest {
         when(userQueryRepository.findById(anyLong())).thenReturn(Optional.empty());
 
         assertThrows(NotFoundException.class, () -> userQueryFacade.getUserById(anyLong()));
-    }
-
-    @Test
-    void should_this_username_is_not_already_exists() {
-        when(userQueryRepository.existsByUsername(anyString())).thenReturn(false);
-
-        boolean result = userQueryFacade.checkIfUsernameIsTaken(anyString());
-
-        assertThat(result).isFalse();
-    }
-
-    @Test
-    void should_this_username_already_exists() {
-        when(userQueryRepository.existsByUsername(anyString())).thenReturn(true);
-
-        assertThrows(AlreadyExistsException.class, () -> userQueryFacade.checkIfUsernameIsTaken(anyString()));
     }
 
     @Test

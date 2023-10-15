@@ -13,7 +13,5 @@ interface UserQueryRepository extends JpaRepository<User, Long> {
 
     List<User> findAll();
 
-    boolean existsByUsername(final String username);
-
     boolean existsByEmail(final String email);
 }

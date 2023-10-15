@@ -2,15 +2,19 @@ package pl.krzychuuweb.labelapp.user;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import pl.krzychuuweb.labelapp.company.Company;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +22,7 @@ public class User {
 
     private String email;
 
-    private String username;
+    private String firstName;
 
     private String password;
 
@@ -44,12 +48,12 @@ public class User {
         this.email = email;
     }
 
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(final String firstName) {
+        this.firstName = firstName;
     }
 
     public String getPassword() {
@@ -72,11 +76,40 @@ public class User {
         this.companies = companies;
     }
 
+    @Override
+    public String getUsername() {
+        return getEmail();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+    }
 
     public static final class UserBuilder {
         private Long id;
         private String email;
-        private String username;
+        private String firstName;
         private String password;
         private LocalDateTime createdAt;
         private List<Company> companies;
@@ -98,8 +131,8 @@ public class User {
             return this;
         }
 
-        public UserBuilder withUsername(String username) {
-            this.username = username;
+        public UserBuilder withFirstName(String firstName) {
+            this.firstName = firstName;
             return this;
         }
 
@@ -121,7 +154,7 @@ public class User {
         public User build() {
             User user = new User();
             user.setEmail(email);
-            user.setUsername(username);
+            user.setFirstName(firstName);
             user.setPassword(password);
             user.setCompanies(companies);
             user.id = this.id;

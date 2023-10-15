@@ -31,15 +31,6 @@ class UserQueryFacadeImpl implements UserQueryFacade {
     }
 
     @Override
-    public boolean checkIfUsernameIsTaken(final String username) throws AlreadyExistsException {
-        if (userQueryRepository.existsByUsername(username)) {
-            throw new AlreadyExistsException("This username already exists");
-        }
-
-        return false;
-    }
-
-    @Override
     public boolean checkIfEmailIsTaken(final String email) throws AlreadyExistsException {
         if (userQueryRepository.existsByEmail(email)) {
             throw new AlreadyExistsException("This email already exists");

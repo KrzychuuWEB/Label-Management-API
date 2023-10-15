@@ -1,8 +1,5 @@
 package pl.krzychuuweb.labelapp;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -19,7 +16,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 public class IntegrationTestConfig {
 
     @Container
-    protected static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:latest");
+    protected static final MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:latest").withDatabaseName("labelapp-test");
 
     @DynamicPropertySource
     static void containerConfig(DynamicPropertyRegistry registry) {

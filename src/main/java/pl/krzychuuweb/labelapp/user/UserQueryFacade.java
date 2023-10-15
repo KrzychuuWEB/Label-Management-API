@@ -10,7 +10,5 @@ public interface UserQueryFacade {
 
     List<User> getAllUsers();
 
-    boolean checkIfUsernameIsTaken(final String username);
-
     boolean checkIfEmailIsTaken(final String email);
 }

@@ -8,7 +8,7 @@ public record UserEditDTO(
         Long id,
         @NotNull
         @Size(min = 1, max = 80)
-        String username,
+        String firstName,
         @NotNull
         @Size(min = 1, max = 255)
         String email

@@ -6,7 +6,7 @@ import pl.krzychuuweb.labelapp.exceptions.NotFoundException;
 import java.util.List;
 
 @Service
-public class CompanyQueryFacadeImpl implements CompanyQueryFacade {
+class CompanyQueryFacadeImpl implements CompanyQueryFacade {
 
     private final CompanyQueryRepository companyQueryRepository;
 

@@ -1,17 +1,24 @@
 package pl.krzychuuweb.labelapp.user;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 import pl.krzychuuweb.labelapp.user.dto.UserCreateDTO;
 
+@Component
 class UserFactory {
 
-    UserFactory() {
+    private final PasswordEncoder passwordEncoder;
+
+    UserFactory(final PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
     }
 
-    static User createUser(UserCreateDTO userCreateDTO) {
+
+    User createUser(UserCreateDTO userCreateDTO) {
         return User.UserBuilder.anUser()
-                .withUsername(userCreateDTO.username())
+                .withFirstName(userCreateDTO.firstName())
                 .withEmail(userCreateDTO.email())
-                .withPassword(userCreateDTO.password())
+                .withPassword(passwordEncoder.encode(userCreateDTO.password()))
                 .build();
     }
 }

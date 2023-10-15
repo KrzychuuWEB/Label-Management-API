@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.krzychuuweb.labelapp.IntegrationTestConfig;
@@ -24,6 +25,7 @@ import static org.junit.Assert.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockUser
 class UserControllerIT extends IntegrationTestConfig {
 
     @Autowired
@@ -42,8 +44,8 @@ class UserControllerIT extends IntegrationTestConfig {
     @Transactional
     void should_get_all_users() throws Exception {
         List<User> users = List.of(
-                User.UserBuilder.anUser().withUsername("username1").withPassword("username1").withEmail("usernam1@email.com").build(),
-                User.UserBuilder.anUser().withUsername("username2").withPassword("username2").withEmail("usernam2@email.com").build()
+                User.UserBuilder.anUser().withFirstName("firstname1").withPassword("password1").withEmail("usernam1@email.com").build(),
+                User.UserBuilder.anUser().withFirstName("firstname2").withPassword("password2").withEmail("usernam2@email.com").build()
         );
         userRepository.saveAll(users);
 
@@ -75,7 +77,7 @@ class UserControllerIT extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_create_user() throws Exception {
-        UserCreateDTO userCreateDTO = new UserCreateDTO("username", "new@email.com", "secret1234");
+        UserCreateDTO userCreateDTO = new UserCreateDTO("firstName", "new@email.com", "secret1234");
 
         MvcResult result2 = mockMvc.perform(post("/users")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -85,29 +87,15 @@ class UserControllerIT extends IntegrationTestConfig {
                 .andReturn();
         UserDTO response = objectMapper.readValue(result2.getResponse().getContentAsString(), UserDTO.class);
 
-        assertThat(response.username()).isEqualTo(userCreateDTO.username());
+        assertThat(response.firstName()).isEqualTo(userCreateDTO.firstName());
         assertThat(response.email()).isEqualTo(userCreateDTO.email());
         assertThat(response.createdAt()).isBefore(LocalDateTime.now());
     }
 
     @Test
     @Transactional
-    void should_create_user_throw_exception_when_username_already_exists() throws Exception {
-        UserCreateDTO userCreateDTO = new UserCreateDTO("takenUsername", "new@email.com", "secret123456");
-        userRepository.save(User.UserBuilder.anUser().withUsername(userCreateDTO.username()).build());
-
-        mockMvc.perform(post("/users")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userCreateDTO))
-                )
-                .andExpect(status().isConflict())
-                .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(AlreadyExistsException.class));
-    }
-
-    @Test
-    @Transactional
     void should_create_user_throw_exception_when_email_already_exists() throws Exception {
-        UserCreateDTO userCreateDTO = new UserCreateDTO("username", "taken@email.com", "secret123456");
+        UserCreateDTO userCreateDTO = new UserCreateDTO("firstName", "taken@email.com", "secret123456");
         userRepository.save(User.UserBuilder.anUser().withEmail(userCreateDTO.email()).build());
 
         mockMvc.perform(post("/users")
@@ -122,9 +110,9 @@ class UserControllerIT extends IntegrationTestConfig {
     @Transactional
     void should_update_user_by_id() throws Exception {
         User savedUser = userRepository.save(
-                User.UserBuilder.anUser().withUsername("oldUsername").withEmail("old@email.com").build()
+                User.UserBuilder.anUser().withFirstName("oldFirstName").withEmail("old@email.com").build()
         );
-        UserEditDTO userEditDTO = new UserEditDTO(savedUser.getId(), "newUsername", "new@email.com");
+        UserEditDTO userEditDTO = new UserEditDTO(savedUser.getId(), "newFirstName", "new@email.com");
 
         MvcResult result = mockMvc.perform(put("/users/" + savedUser.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -135,28 +123,14 @@ class UserControllerIT extends IntegrationTestConfig {
 
         UserDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), UserDTO.class);
 
-        assertThat(response.username()).isEqualTo(userEditDTO.username());
+        assertThat(response.firstName()).isEqualTo(userEditDTO.firstName());
         assertThat(response.email()).isEqualTo(userEditDTO.email());
     }
 
     @Test
     @Transactional
-    void should_update_user_throw_exception_when_username_already_exists() throws Exception {
-        UserEditDTO userEditDTO = new UserEditDTO(1L, "takenUsername", "email@email.com");
-        userRepository.save(User.UserBuilder.anUser().withUsername(userEditDTO.username()).build());
-
-        mockMvc.perform(put("/users/" + userEditDTO.id())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(userEditDTO))
-                )
-                .andExpect(status().isConflict())
-                .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(AlreadyExistsException.class));
-    }
-
-    @Test
-    @Transactional
     void should_update_user_throw_exception_when_email_already_exists() throws Exception {
-        UserEditDTO userEditDTO = new UserEditDTO(1L, "username", "taken@email.com");
+        UserEditDTO userEditDTO = new UserEditDTO(1L, "firstName", "taken@email.com");
         userRepository.save(User.UserBuilder.anUser().withEmail(userEditDTO.email()).build());
 
         mockMvc.perform(put("/users/" + userEditDTO.id())

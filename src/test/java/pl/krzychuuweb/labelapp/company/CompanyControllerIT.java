@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import pl.krzychuuweb.labelapp.IntegrationTestConfig;
@@ -23,6 +24,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WithMockUser(username = "email@email.com")
 class CompanyControllerIT extends IntegrationTestConfig {
 
     @Autowired
@@ -40,7 +42,7 @@ class CompanyControllerIT extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_get_company_by_id() throws Exception {
-        User user = userFacade.addUser(new UserCreateDTO("username", "email@email.com", "secret123456"));
+        User user = userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "secret123456"));
         Company company = companyRepository.save(Company.CompanyBuilder.aCompany().withId(1L).withName("companyName").withFooter("companyFooter").withUser(user).build());
 
         MvcResult result = mockMvc.perform(get("/companies/" + company.getId()))
@@ -50,16 +52,17 @@ class CompanyControllerIT extends IntegrationTestConfig {
         CompanyDTO response = objectMapper.readValue(result.getResponse().getContentAsString(), CompanyDTO.class);
 
         assertThat(response.name()).isEqualTo(company.getName());
-        assertThat(response.user().getId()).isEqualTo(user.getId());
+        assertThat(response.user().id()).isEqualTo(user.getId());
     }
 
     @Test
     @Transactional
     void should_get_all_companies() throws Exception {
+        User user = userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "password1234"));
         List<Company> companyList = List.of(
-                Company.CompanyBuilder.aCompany().build(),
-                Company.CompanyBuilder.aCompany().build(),
-                Company.CompanyBuilder.aCompany().build()
+                Company.CompanyBuilder.aCompany().withUser(user).build(),
+                Company.CompanyBuilder.aCompany().withUser(user).build(),
+                Company.CompanyBuilder.aCompany().withUser(user).build()
         );
         companyRepository.saveAll(companyList);
 
@@ -76,6 +79,7 @@ class CompanyControllerIT extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_create_company() throws Exception {
+        userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "password1234"));
         CompanyCreateDTO companyCreateDTO = new CompanyCreateDTO("companyName", "companyFooter");
 
         MvcResult result = mockMvc.perform(post("/companies")
@@ -93,7 +97,9 @@ class CompanyControllerIT extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_edit_company() throws Exception {
-        Company company = companyRepository.save(Company.CompanyBuilder.aCompany().withName("companyName").withFooter("companyFooter").build());
+        User user = userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "password1234"));
+        Company company = companyRepository.save(Company.CompanyBuilder.aCompany().withName("companyName").withFooter("companyFooter").withUser(user).build());
+        String oldCompanyName = company.getName();
         CompanyEditDTO companyEditDTO = new CompanyEditDTO(company.getId(), "newCompanyName", "newCompanyFooter");
 
         MvcResult result = mockMvc.perform(put("/companies/" + companyEditDTO.id())
@@ -106,7 +112,8 @@ class CompanyControllerIT extends IntegrationTestConfig {
 
         assertThat(response.name()).isEqualTo(companyEditDTO.name());
         assertThat(response.footer()).isEqualTo(companyEditDTO.footer());
-        assertThat(response.name()).isNotEqualTo(company.getName());
+
+        assertThat(response.name()).isNotEqualTo(oldCompanyName);
     }
 
     @Test

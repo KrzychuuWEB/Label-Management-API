@@ -14,28 +14,29 @@ class UserFacadeImpl implements UserFacade {
 
     private final UserRepository userRepository;
 
-    public UserFacadeImpl(final UserQueryFacade userQueryFacade, final UserRepository userRepository) {
+    private final UserFactory userFactory;
+
+    UserFacadeImpl(final UserQueryFacade userQueryFacade, final UserRepository userRepository, final UserFactory userFactory) {
         this.userQueryFacade = userQueryFacade;
         this.userRepository = userRepository;
+        this.userFactory = userFactory;
     }
 
     @Override
     @Transactional
     public User addUser(final UserCreateDTO userCreateDTO) throws AlreadyExistsException {
-        userQueryFacade.checkIfUsernameIsTaken(userCreateDTO.username());
         userQueryFacade.checkIfEmailIsTaken(userCreateDTO.email());
 
-        return userRepository.save(UserFactory.createUser(userCreateDTO));
+        return userRepository.save(userFactory.createUser(userCreateDTO));
     }
 
     @Override
     @Transactional
     public User updateUser(final UserEditDTO userEditDTO) throws AlreadyExistsException {
-        userQueryFacade.checkIfUsernameIsTaken(userEditDTO.username());
         userQueryFacade.checkIfEmailIsTaken(userEditDTO.email());
 
         User user = userQueryFacade.getUserById(userEditDTO.id());
-        user.setUsername(userEditDTO.username());
+        user.setFirstName(userEditDTO.firstName());
         user.setEmail(userEditDTO.email());
 
         return userRepository.save(user);

@@ -1,7 +1,7 @@
 package pl.krzychuuweb.labelapp.company.dto;
 
 import pl.krzychuuweb.labelapp.company.Company;
-import pl.krzychuuweb.labelapp.user.User;
+import pl.krzychuuweb.labelapp.user.dto.UserDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -11,11 +11,17 @@ public record CompanyDTO(
         String name,
         String footer,
         LocalDateTime createdAt,
-        User user
+        UserDTO user
 ) {
 
     public static CompanyDTO mapCompanyToCompanyDTO(Company company) {
-        return new CompanyDTO(company.getId(), company.getName(), company.getFooter(), company.getCreatedAt(), company.getUser());
+        return new CompanyDTO(
+                company.getId(),
+                company.getName(),
+                company.getFooter(),
+                company.getCreatedAt(),
+                UserDTO.mapUserToUserDTO(company.getUser())
+        );
     }
 
     public static List<CompanyDTO> mapCompanyListToCompanyDTOList(List<Company> companyList) {
@@ -24,7 +30,7 @@ public record CompanyDTO(
                 company.getName(),
                 company.getFooter(),
                 company.getCreatedAt(),
-                company.getUser()
+                UserDTO.mapUserToUserDTO(company.getUser())
         )).toList();
     }
 }
