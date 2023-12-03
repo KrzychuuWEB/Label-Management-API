@@ -25,7 +25,7 @@ import static org.junit.Assert.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WithMockUser
+@WithMockUser(username = "email@email.com")
 class UserControllerIT extends IntegrationTestConfig {
 
     @Autowired
@@ -39,6 +39,9 @@ class UserControllerIT extends IntegrationTestConfig {
 
     @Autowired
     private UserQueryFacade userQueryFacade;
+
+    @Autowired
+    private UserFacade userFacade;
 
     @Test
     @Transactional
@@ -62,8 +65,7 @@ class UserControllerIT extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_get_user_by_id() throws Exception {
-        User user = User.UserBuilder.anUser().build();
-        userRepository.save(user);
+        User user = userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "secret1234"));
 
         MvcResult result = mockMvc.perform(get("/users/" + user.getId()))
                 .andExpect(status().isOk())
@@ -110,7 +112,7 @@ class UserControllerIT extends IntegrationTestConfig {
     @Transactional
     void should_update_user_by_id() throws Exception {
         User savedUser = userRepository.save(
-                User.UserBuilder.anUser().withFirstName("oldFirstName").withEmail("old@email.com").build()
+                User.UserBuilder.anUser().withFirstName("oldFirstName").withEmail("email@email.com").build()
         );
         UserEditDTO userEditDTO = new UserEditDTO(savedUser.getId(), "newFirstName", "new@email.com");
 
@@ -130,6 +132,7 @@ class UserControllerIT extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_update_user_throw_exception_when_email_already_exists() throws Exception {
+        userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "secret1234"));
         UserEditDTO userEditDTO = new UserEditDTO(1L, "firstName", "taken@email.com");
         userRepository.save(User.UserBuilder.anUser().withEmail(userEditDTO.email()).build());
 
@@ -142,10 +145,12 @@ class UserControllerIT extends IntegrationTestConfig {
     }
 
     @Test
+    @Transactional
     void should_update_user_by_id_with_id_is_not_same() throws Exception {
-        UserEditDTO userEditDTO = new UserEditDTO(1L, "newUsername", "new@email.com");
+        User user = userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "secret1234"));
+        UserEditDTO userEditDTO = new UserEditDTO(2L, "newUsername", "new@email.com");
 
-        mockMvc.perform(put("/users/0")
+        mockMvc.perform(put("/users/" + user.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userEditDTO))
                 )
@@ -156,8 +161,7 @@ class UserControllerIT extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_delete_user_by_id() throws Exception {
-        User user = User.UserBuilder.anUser().build();
-        userRepository.save(user);
+        User user = userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "secret1234"));
 
         mockMvc.perform(delete("/users/" + user.getId()))
                 .andExpect(status().isNoContent())

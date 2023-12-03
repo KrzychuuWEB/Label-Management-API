@@ -2,11 +2,13 @@ package pl.krzychuuweb.labelapp.company;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.krzychuuweb.labelapp.company.dto.CompanyCreateDTO;
 import pl.krzychuuweb.labelapp.company.dto.CompanyDTO;
 import pl.krzychuuweb.labelapp.company.dto.CompanyEditDTO;
 import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
+import pl.krzychuuweb.labelapp.security.ownership.CheckOwnership;
 
 import java.util.List;
 import java.util.Objects;
@@ -27,11 +29,13 @@ class CompanyController {
         this.companyFacade = companyFacade;
     }
 
+    @CheckOwnership(CompanyOwnershipStrategy.class)
     @GetMapping("/{id}")
     CompanyDTO getCompanyById(@PathVariable Long id) {
         return mapCompanyToCompanyDTO(companyQueryFacade.getById(id));
     }
 
+    @Secured("ROLE_ADMIN")
     @GetMapping
     List<CompanyDTO> getAllCompanies() {
         return mapCompanyListToCompanyDTOList(companyQueryFacade.getAll());
@@ -43,6 +47,7 @@ class CompanyController {
         return mapCompanyToCompanyDTO(companyFacade.addCompany(companyCreateDTO));
     }
 
+    @CheckOwnership(CompanyOwnershipStrategy.class)
     @PutMapping("/{id}")
     CompanyDTO updateCompany(@Valid @RequestBody CompanyEditDTO companyEditDTO, @PathVariable Long id) {
         if (!Objects.equals(companyEditDTO.id(), id)) {
@@ -52,6 +57,7 @@ class CompanyController {
         return mapCompanyToCompanyDTO(companyFacade.updateCompany(companyEditDTO));
     }
 
+    @CheckOwnership(CompanyOwnershipStrategy.class)
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void deleteCompany(@PathVariable Long id) {

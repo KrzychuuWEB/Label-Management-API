@@ -1,4 +1,4 @@
-package pl.krzychuuweb.labelapp.auth;
+package pl.krzychuuweb.labelapp.security.ownership;
 
 
 import java.lang.annotation.ElementType;
@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CheckOwnership {
 
-    public Class<?> value();
+    Class<? extends OwnershipStrategy> value();
 }

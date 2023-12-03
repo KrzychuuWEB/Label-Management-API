@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 interface CompanyQueryRepository extends JpaRepository<Company, Long> {
 
+    Long getUserIdById(final Long companyId);
 }

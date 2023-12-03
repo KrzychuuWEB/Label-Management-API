@@ -16,7 +16,7 @@ import java.util.Map;
 class GlobalExceptionsHandler {
 
     @ExceptionHandler(AlreadyExistsException.class)
-    ResponseEntity<ResponseErrorMessage> handleAlreadyExistsException(RuntimeException ex) {
+    ResponseEntity<ResponseErrorMessage> handleAlreadyExistsException(AlreadyExistsException ex) {
         ResponseErrorMessage message = new ResponseErrorMessage(
                 ex.getMessage(),
                 HttpStatus.CONFLICT
@@ -26,7 +26,7 @@ class GlobalExceptionsHandler {
     }
 
     @ExceptionHandler(NotFoundException.class)
-    ResponseEntity<ResponseErrorMessage> handleNotFoundException(RuntimeException ex) {
+    ResponseEntity<ResponseErrorMessage> handleNotFoundException(NotFoundException ex) {
         ResponseErrorMessage message = new ResponseErrorMessage(
                 ex.getMessage(),
                 HttpStatus.NOT_FOUND
@@ -47,7 +47,7 @@ class GlobalExceptionsHandler {
 
 
     @ExceptionHandler(BadRequestException.class)
-    ResponseEntity<ResponseErrorMessage> handleBadRequestException(RuntimeException ex) {
+    ResponseEntity<ResponseErrorMessage> handleBadRequestException(BadRequestException ex) {
         ResponseErrorMessage message = new ResponseErrorMessage(
                 ex.getMessage(),
                 HttpStatus.BAD_REQUEST
