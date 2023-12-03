@@ -3,15 +3,11 @@ package pl.krzychuuweb.labelapp.company;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
+import pl.krzychuuweb.labelapp.auth.AuthQueryFacade;
 import pl.krzychuuweb.labelapp.company.dto.CompanyCreateDTO;
 import pl.krzychuuweb.labelapp.company.dto.CompanyEditDTO;
 import pl.krzychuuweb.labelapp.user.User;
 import pl.krzychuuweb.labelapp.user.UserQueryFacade;
-
-import java.nio.file.AccessDeniedException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -29,6 +25,9 @@ class CompanyFacadeImplTest {
     @Autowired
     private CompanyQueryFacade companyQueryFacade;
 
+    @Autowired
+    private AuthQueryFacade authQueryFacade;
+
     private CompanyFacade companyFacade;
 
     @BeforeEach
@@ -36,13 +35,8 @@ class CompanyFacadeImplTest {
         userQueryFacade = mock(UserQueryFacade.class);
         companyRepository = mock(CompanyRepository.class);
         companyQueryFacade = mock(CompanyQueryFacade.class);
-        companyFacade = new CompanyFacadeImpl(userQueryFacade, companyRepository, companyQueryFacade);
-
-        Authentication authentication = mock(Authentication.class);
-        SecurityContext securityContext = mock(SecurityContext.class);
-        when(securityContext.getAuthentication()).thenReturn(authentication);
-        SecurityContextHolder.setContext(securityContext);
-        when(authentication.getName()).thenReturn("email@email.com");
+        authQueryFacade = mock(AuthQueryFacade.class);
+        companyFacade = new CompanyFacadeImpl(userQueryFacade, companyRepository, companyQueryFacade, authQueryFacade);
     }
 
     @Test
@@ -59,9 +53,9 @@ class CompanyFacadeImplTest {
     }
 
     @Test
-    void should_edit_company() throws AccessDeniedException {
+    void should_edit_company() {
         CompanyEditDTO companyEditDTO = new CompanyEditDTO(1L, "newCompanyName", "newCompanyFooter");
-        User user = User.UserBuilder.anUser().withId(1L).withEmail("email@email.com").build();
+        User user = User.UserBuilder.anUser().withId(1L).withEmail("email2@email.com").build();
         Company company = Company.CompanyBuilder.aCompany().withName(companyEditDTO.name()).withFooter(companyEditDTO.footer()).withUser(user).build();
 
         when(companyQueryFacade.getById(anyLong())).thenReturn(company);

@@ -8,7 +8,6 @@ import pl.krzychuuweb.labelapp.company.dto.CompanyDTO;
 import pl.krzychuuweb.labelapp.company.dto.CompanyEditDTO;
 import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
 
-import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
 
@@ -45,7 +44,7 @@ class CompanyController {
     }
 
     @PutMapping("/{id}")
-    CompanyDTO updateCompany(@Valid @RequestBody CompanyEditDTO companyEditDTO, @PathVariable Long id) throws AccessDeniedException {
+    CompanyDTO updateCompany(@Valid @RequestBody CompanyEditDTO companyEditDTO, @PathVariable Long id) {
         if (!Objects.equals(companyEditDTO.id(), id)) {
             throw new BadRequestException("Id is not this same");
         }

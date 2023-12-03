@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -53,6 +54,17 @@ class CompanyControllerIT extends IntegrationTestConfig {
 
         assertThat(response.name()).isEqualTo(company.getName());
         assertThat(response.user().id()).isEqualTo(user.getId());
+    }
+
+    @Test
+    @Transactional
+    void should_get_company_by_id_without_user_not_have_access() throws Exception {
+        User user = userFacade.addUser(new UserCreateDTO("firstName", "otherUserEmail@email.com", "secret123456"));
+        Company company = companyRepository.save(Company.CompanyBuilder.aCompany().withId(1L).withName("companyName").withFooter("companyFooter").withUser(user).build());
+
+        mockMvc.perform(get("/companies/" + company.getId()))
+                .andExpect(status().isForbidden())
+                .andReturn();
     }
 
     @Test
@@ -131,7 +143,8 @@ class CompanyControllerIT extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_delete_company() throws Exception {
-        Company company = companyRepository.save(Company.CompanyBuilder.aCompany().build());
+        User user = userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "password1234"));
+        Company company = companyRepository.save(Company.CompanyBuilder.aCompany().withUser(user).build());
 
         assertThat(company).isInstanceOf(Company.class);
 
@@ -139,4 +152,6 @@ class CompanyControllerIT extends IntegrationTestConfig {
                 .andExpect(status().isNoContent())
                 .andReturn();
     }
+
+
 }

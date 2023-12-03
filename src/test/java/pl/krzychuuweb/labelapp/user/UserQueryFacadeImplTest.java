@@ -3,6 +3,7 @@ package pl.krzychuuweb.labelapp.user;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.krzychuuweb.labelapp.auth.AuthQueryFacade;
 import pl.krzychuuweb.labelapp.exceptions.AlreadyExistsException;
 import pl.krzychuuweb.labelapp.exceptions.NotFoundException;
 
@@ -21,6 +22,7 @@ class UserQueryFacadeImplTest {
 
     @Autowired
     private UserQueryRepository userQueryRepository;
+
     private UserQueryFacade userQueryFacade;
 
     @BeforeEach

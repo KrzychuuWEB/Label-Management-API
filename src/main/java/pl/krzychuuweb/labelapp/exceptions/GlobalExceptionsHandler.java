@@ -36,7 +36,7 @@ class GlobalExceptionsHandler {
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    ResponseEntity<ResponseErrorMessage> handleAccessDeniedException(RuntimeException ex) {
+    ResponseEntity<ResponseErrorMessage> handleAccessDeniedException(AccessDeniedException ex) {
         ResponseErrorMessage message = new ResponseErrorMessage(
                 ex.getMessage(),
                 HttpStatus.FORBIDDEN

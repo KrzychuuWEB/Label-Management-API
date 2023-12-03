@@ -19,6 +19,7 @@ class CompanyQueryFacadeImplTest {
 
     @Autowired
     private CompanyQueryRepository companyQueryRepository;
+
     private CompanyQueryFacade companyQueryFacade;
 
     @BeforeEach
