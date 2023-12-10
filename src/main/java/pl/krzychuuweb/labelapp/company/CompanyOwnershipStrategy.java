@@ -14,6 +14,6 @@ class CompanyOwnershipStrategy implements OwnershipStrategy {
 
     @Override
     public boolean isOwner(final Long userId, final Long companyId) {
-        return companyQueryFacade.getById(companyId).getUser().getId().equals(userId);
+        return userId.equals(companyQueryFacade.getById(companyId).getUser().getId());
     }
 }

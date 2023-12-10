@@ -46,7 +46,7 @@ class CompanyControllerIT extends IntegrationTestConfig {
     @Transactional
     void should_get_company_by_id() throws Exception {
         User user = userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "secret123456"));
-        Company company = companyRepository.save(Company.CompanyBuilder.aCompany().withId(1L).withName("companyName").withFooter("companyFooter").withUser(user).build());
+        Company company = companyRepository.save(Company.CompanyBuilder.aCompany().withName("companyName").withFooter("companyFooter").withUser(user).build());
 
         MvcResult result = mockMvc.perform(get("/companies/" + company.getId()))
                 .andExpect(status().isOk())
@@ -124,7 +124,7 @@ class CompanyControllerIT extends IntegrationTestConfig {
     void should_edit_company_return_badRequest_exception() throws Exception {
         userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "password123456"));
         Company company = companyFacade.addCompany(new CompanyCreateDTO("exampleName", "exampleFooter"));
-        CompanyEditDTO companyEditDTO = new CompanyEditDTO(2L, "companyName", "companyFooter");
+        CompanyEditDTO companyEditDTO = new CompanyEditDTO(company.getId() + 1L, "companyName", "companyFooter");
 
         mockMvc.perform(put("/companies/" + company.getId())
                         .contentType(MediaType.APPLICATION_JSON)

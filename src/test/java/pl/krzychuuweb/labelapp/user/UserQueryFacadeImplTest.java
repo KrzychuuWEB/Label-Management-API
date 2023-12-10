@@ -3,16 +3,18 @@ package pl.krzychuuweb.labelapp.user;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.krzychuuweb.labelapp.auth.AuthQueryFacade;
 import pl.krzychuuweb.labelapp.exceptions.AlreadyExistsException;
 import pl.krzychuuweb.labelapp.exceptions.NotFoundException;
+import pl.krzychuuweb.labelapp.role.Role;
+import pl.krzychuuweb.labelapp.role.UserRole;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -60,7 +62,9 @@ class UserQueryFacadeImplTest {
     void should_get_user_by_email_expect_exception() {
         when(userQueryRepository.getByEmail(anyString())).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> userQueryFacade.getUserByEmail(anyString()));
+        assertThatThrownBy(() -> {
+            userQueryFacade.getUserByEmail(anyString());
+        }).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -79,7 +83,7 @@ class UserQueryFacadeImplTest {
     void should_get_user_by_id_expect_exception() {
         when(userQueryRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThrows(NotFoundException.class, () -> userQueryFacade.getUserById(anyLong()));
+        assertThatThrownBy(() -> userQueryFacade.getUserById(anyLong())).isInstanceOf(NotFoundException.class);
     }
 
     @Test
@@ -95,6 +99,22 @@ class UserQueryFacadeImplTest {
     void should_this_email_already_exists() {
         when(userQueryRepository.existsByEmail(anyString())).thenReturn(true);
 
-        assertThrows(AlreadyExistsException.class, () -> userQueryFacade.checkIfEmailIsTaken(anyString()));
+        assertThatThrownBy(() -> {
+            userQueryFacade.checkIfEmailIsTaken(anyString());
+        }).isInstanceOf(AlreadyExistsException.class);
+    }
+
+    @Test
+    void should_check_user_role() {
+        Role role = Role.RoleBuilder.aRole().withName(UserRole.ROLE_USER).build();
+        User user = User.UserBuilder.anUser().withId(1L).withRoles(Set.of(role)).build();
+
+        when(userQueryRepository.findById(anyLong())).thenReturn(Optional.of(user));
+
+        User result = userQueryFacade.getUserById(user.getId());
+
+        assertThat(result.getId()).isEqualTo(user.getId());
+        assertThat(result).isEqualTo(user);
+        assertThat(result.getRoles().stream().findFirst().get().getName()).isEqualTo(role.getName());
     }
 }

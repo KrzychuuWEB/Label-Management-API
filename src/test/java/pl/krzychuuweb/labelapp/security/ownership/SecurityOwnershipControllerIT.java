@@ -55,7 +55,7 @@ class SecurityOwnershipControllerIT extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_user_has_access_for_company_resource() throws Exception {
-        Company company = companyFacade.addCompany(new CompanyCreateDTO("test", "Test"));
+        Company company = companyFacade.addCompany(new CompanyCreateDTO("companyName", "companyFooter"));
 
         mockMvc.perform(get("/companies/" + company.getId()))
                 .andExpect(status().isOk())

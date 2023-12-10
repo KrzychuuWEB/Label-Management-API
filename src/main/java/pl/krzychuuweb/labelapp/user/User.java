@@ -6,11 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.krzychuuweb.labelapp.company.Company;
+import pl.krzychuuweb.labelapp.role.Role;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -32,6 +31,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Company> companies = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "users")
+    private Set<Role> roles = new HashSet<>();
 
     User() {
     }
@@ -103,7 +105,21 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        List<SimpleGrantedAuthority> rolesList = new ArrayList<>();
+
+        for (Role role : getRoles()) {
+            rolesList.add(new SimpleGrantedAuthority(role.getName().getName()));
+        }
+
+        return rolesList;
+    }
+
+    public Set<Role> getRoles() {
+        return roles != null ? roles : Collections.emptySet();
+    }
+
+    public void setRoles(final Set<Role> roles) {
+        this.roles = roles;
     }
 
     public static final class UserBuilder {
@@ -111,8 +127,7 @@ public class User implements UserDetails {
         private String email;
         private String firstName;
         private String password;
-        private LocalDateTime createdAt;
-        private List<Company> companies;
+        private Set<Role> roles;
 
         private UserBuilder() {
         }
@@ -141,13 +156,8 @@ public class User implements UserDetails {
             return this;
         }
 
-        public UserBuilder withCreatedAt(LocalDateTime createdAt) {
-            this.createdAt = createdAt;
-            return this;
-        }
-
-        public UserBuilder withCompanies(List<Company> companies) {
-            this.companies = companies;
+        public UserBuilder withRoles(Set<Role> roles) {
+            this.roles = roles;
             return this;
         }
 
@@ -156,9 +166,8 @@ public class User implements UserDetails {
             user.setEmail(email);
             user.setFirstName(firstName);
             user.setPassword(password);
-            user.setCompanies(companies);
+            user.setRoles(roles);
             user.id = this.id;
-            user.createdAt = this.createdAt;
             return user;
         }
     }
