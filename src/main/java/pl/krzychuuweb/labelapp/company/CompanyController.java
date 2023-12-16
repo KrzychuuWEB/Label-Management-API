@@ -51,7 +51,7 @@ class CompanyController {
     @PutMapping("/{id}")
     CompanyDTO updateCompany(@Valid @RequestBody CompanyEditDTO companyEditDTO, @PathVariable Long id) {
         if (!Objects.equals(companyEditDTO.id(), id)) {
-            throw new BadRequestException("Id is not this same");
+            throw new BadRequestException("Id is not the same");
         }
 
         return mapCompanyToCompanyDTO(companyFacade.updateCompany(companyEditDTO));
