@@ -2,12 +2,15 @@ package pl.krzychuuweb.labelapp.nutritionalvalue.dto;
 
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public record NutritionalValueDTO(
         Long id,
         String name,
-        Float priority
+        Float priority,
+
+        LocalDateTime createdAt
 ) {
     public static List<NutritionalValueDTO> mapNutritionalValueListToNutritionalValueDTO(List<NutritionalValue> nutritionalValues) {
         return nutritionalValues.stream()
@@ -15,7 +18,8 @@ public record NutritionalValueDTO(
                         new NutritionalValueDTO(
                                 nutritionalValue.getId(),
                                 nutritionalValue.getName(),
-                                nutritionalValue.getPriority()
+                                nutritionalValue.getPriority(),
+                                nutritionalValue.getCreatedAt()
                         )).toList();
     }
 
@@ -23,7 +27,8 @@ public record NutritionalValueDTO(
         return new NutritionalValueDTO(
                 nutritionalValue.getId(),
                 nutritionalValue.getName(),
-                nutritionalValue.getPriority()
+                nutritionalValue.getPriority(),
+                nutritionalValue.getCreatedAt()
         );
     }
 }
