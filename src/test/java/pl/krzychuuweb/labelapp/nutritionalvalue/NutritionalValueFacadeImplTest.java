@@ -7,7 +7,8 @@ import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
 class NutritionalValueFacadeImplTest {
@@ -33,7 +34,7 @@ class NutritionalValueFacadeImplTest {
 
     @Test
     void should_create_new_nutritional_value() {
-        CreateNutritionalValueDTO createNutritionalValueDTO = new CreateNutritionalValueDTO("exampleName", 1F);
+        CreateNutritionalValueDTO createNutritionalValueDTO = new CreateNutritionalValueDTO("exampleName", 1);
         NutritionalValue nutritionalValue = NutritionalValue.NutritionalValueBuilder.aNutritionalValue()
                 .withName(createNutritionalValueDTO.name())
                 .withPriority(createNutritionalValueDTO.priority())

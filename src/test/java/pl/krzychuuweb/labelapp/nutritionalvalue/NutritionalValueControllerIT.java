@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WithMockUser(username = "email@email.com")
-class NutritionalValueControllerTest extends IntegrationTestConfig {
+class NutritionalValueControllerIT extends IntegrationTestConfig {
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -35,11 +35,11 @@ class NutritionalValueControllerTest extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_get_all_nutritional_values() throws Exception {
-        nutritionalValueRepository.save(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example1").withPriority(1F).build());
-        nutritionalValueRepository.save(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example2").withPriority(2F).build());
-        nutritionalValueRepository.save(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example3").withPriority(3F).build());
+        nutritionalValueRepository.save(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example1").withPriority(1).build());
+        nutritionalValueRepository.save(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example2").withPriority(2).build());
+        nutritionalValueRepository.save(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example3").withPriority(3).build());
 
-        MvcResult response = mockMvc.perform(get("/nutritionalvalues"))
+        MvcResult response = mockMvc.perform(get("/nutritional-values"))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -52,9 +52,9 @@ class NutritionalValueControllerTest extends IntegrationTestConfig {
     @Test
     @Transactional
     void should_add_new_nutritional_value() throws Exception {
-        CreateNutritionalValueDTO createNutritionalValueDTO = new CreateNutritionalValueDTO("exampleName", 1F);
+        CreateNutritionalValueDTO createNutritionalValueDTO = new CreateNutritionalValueDTO("exampleName", 1);
 
-        MvcResult response = mockMvc.perform(post("/nutritionalvalues")
+        MvcResult response = mockMvc.perform(post("/nutritional-values")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(createNutritionalValueDTO))
                 )
@@ -74,12 +74,12 @@ class NutritionalValueControllerTest extends IntegrationTestConfig {
                 NutritionalValue.NutritionalValueBuilder
                         .aNutritionalValue()
                         .withName("exampleName")
-                        .withPriority(1F)
+                        .withPriority(1)
                         .build()
         );
         EditNutritionalValueDTO editNutritionalValueDTO = new EditNutritionalValueDTO(nutritionalValue.getId(), "newExampleName");
 
-        MvcResult response = mockMvc.perform(put("/nutritionalvalues/" + nutritionalValue.getId())
+        MvcResult response = mockMvc.perform(put("/nutritional-values/" + nutritionalValue.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(editNutritionalValueDTO))
                 )
@@ -98,11 +98,11 @@ class NutritionalValueControllerTest extends IntegrationTestConfig {
                 NutritionalValue.NutritionalValueBuilder
                         .aNutritionalValue()
                         .withName("exampleName")
-                        .withPriority(1F)
+                        .withPriority(1)
                         .build()
         );
 
-        mockMvc.perform(delete("/nutritionalvalues/" + nutritionalValue.getId()))
+        mockMvc.perform(delete("/nutritional-values/" + nutritionalValue.getId()))
                 .andExpect(status().isNoContent())
                 .andReturn();
     }

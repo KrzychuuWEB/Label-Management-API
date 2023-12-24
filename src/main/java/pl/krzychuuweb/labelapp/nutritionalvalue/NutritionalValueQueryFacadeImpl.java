@@ -26,7 +26,7 @@ class NutritionalValueQueryFacadeImpl implements NutritionalValueQueryFacade {
     }
 
     @Override
-    public boolean checkWhetherPriorityIsNotUsed(final Float priority) {
+    public boolean checkWhetherPriorityIsNotUsed(final Integer priority) {
         if (nutritionalValueQueryRepository.existsByPriority(priority)) {
             throw new BadRequestException("This priority has been used");
         }

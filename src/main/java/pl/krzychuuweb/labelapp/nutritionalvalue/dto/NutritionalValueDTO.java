@@ -1,6 +1,7 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue.dto;
 
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
+import pl.krzychuuweb.labelapp.subnutritionalvalue.dto.SubNutritionalValueDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -8,8 +9,8 @@ import java.util.List;
 public record NutritionalValueDTO(
         Long id,
         String name,
-        Float priority,
-
+        Integer priority,
+        List<SubNutritionalValueDTO> subNutritionalValueDTO,
         LocalDateTime createdAt
 ) {
     public static List<NutritionalValueDTO> mapNutritionalValueListToNutritionalValueDTO(List<NutritionalValue> nutritionalValues) {
@@ -19,6 +20,7 @@ public record NutritionalValueDTO(
                                 nutritionalValue.getId(),
                                 nutritionalValue.getName(),
                                 nutritionalValue.getPriority(),
+                                SubNutritionalValueDTO.mapToSubNutritionalValueList(nutritionalValue.getSubNutritionalValues()),
                                 nutritionalValue.getCreatedAt()
                         )).toList();
     }
@@ -28,6 +30,7 @@ public record NutritionalValueDTO(
                 nutritionalValue.getId(),
                 nutritionalValue.getName(),
                 nutritionalValue.getPriority(),
+                SubNutritionalValueDTO.mapToSubNutritionalValueList(nutritionalValue.getSubNutritionalValues()),
                 nutritionalValue.getCreatedAt()
         );
     }

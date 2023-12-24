@@ -2,8 +2,10 @@ package pl.krzychuuweb.labelapp.nutritionalvalue;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import pl.krzychuuweb.labelapp.subnutritionalvalue.SubNutritionalValue;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "nutritional_values")
@@ -15,11 +17,14 @@ public class NutritionalValue {
 
     private String name;
 
-    private Float priority;
+    private Integer priority;
 
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @OneToMany(mappedBy = "nutritionalValue")
+    private List<SubNutritionalValue> subNutritionalValues;
 
     NutritionalValue() {
     }
@@ -40,11 +45,11 @@ public class NutritionalValue {
         this.name = name;
     }
 
-    public Float getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
-    public void setPriority(final Float priority) {
+    public void setPriority(final Integer priority) {
         this.priority = priority;
     }
 
@@ -52,10 +57,18 @@ public class NutritionalValue {
         return createdAt;
     }
 
+    public List<SubNutritionalValue> getSubNutritionalValues() {
+        return subNutritionalValues;
+    }
+
+    public void setSubNutritionalValues(final List<SubNutritionalValue> subNutritionalValues) {
+        this.subNutritionalValues = subNutritionalValues;
+    }
+
     public static final class NutritionalValueBuilder {
         private Long id;
         private String name;
-        private Float priority;
+        private Integer priority;
 
         private NutritionalValueBuilder() {
         }
@@ -74,13 +87,9 @@ public class NutritionalValue {
             return this;
         }
 
-        public NutritionalValueBuilder withPriority(Float priority) {
+        public NutritionalValueBuilder withPriority(Integer priority) {
             this.priority = priority;
             return this;
-        }
-
-        public NutritionalValueBuilder but() {
-            return aNutritionalValue().withId(id).withName(name).withPriority(priority);
         }
 
         public NutritionalValue build() {

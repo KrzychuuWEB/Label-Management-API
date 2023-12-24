@@ -8,5 +8,5 @@ public interface NutritionalValueQueryFacade {
 
     NutritionalValue getById(final Long id);
 
-    boolean checkWhetherPriorityIsNotUsed(final Float priority);
+    boolean checkWhetherPriorityIsNotUsed(final Integer priority);
 }

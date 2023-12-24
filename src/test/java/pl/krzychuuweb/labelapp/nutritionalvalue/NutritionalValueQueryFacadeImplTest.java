@@ -12,7 +12,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyFloat;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -33,9 +33,9 @@ class NutritionalValueQueryFacadeImplTest {
     @Test
     void should_get_all_nutritional_values() {
         List<NutritionalValue> nutritionalValues = new ArrayList<>();
-        nutritionalValues.add(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example1").withPriority(1F).build());
-        nutritionalValues.add(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example2").withPriority(2F).build());
-        nutritionalValues.add(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example3").withPriority(3F).build());
+        nutritionalValues.add(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example1").withPriority(1).build());
+        nutritionalValues.add(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example2").withPriority(2).build());
+        nutritionalValues.add(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example3").withPriority(3).build());
 
         when(nutritionalValueQueryRepository.findAll()).thenReturn(nutritionalValues);
 
@@ -46,7 +46,7 @@ class NutritionalValueQueryFacadeImplTest {
 
     @Test
     void should_get_nutritional_value_by_id() {
-        NutritionalValue nutritionalValue = NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example1").withPriority(1F).build();
+        NutritionalValue nutritionalValue = NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example1").withPriority(1).build();
 
         when(nutritionalValueQueryRepository.findById(anyLong())).thenReturn(Optional.of(nutritionalValue));
 
@@ -66,16 +66,16 @@ class NutritionalValueQueryFacadeImplTest {
 
     @Test
     void should_priority_has_been_used() {
-        when(nutritionalValueQueryRepository.existsByPriority(anyFloat())).thenReturn(true);
+        when(nutritionalValueQueryRepository.existsByPriority(anyInt())).thenReturn(true);
 
-        assertThatThrownBy(() -> nutritionalValueQueryFacade.checkWhetherPriorityIsNotUsed(anyFloat())).isInstanceOf(BadRequestException.class);
+        assertThatThrownBy(() -> nutritionalValueQueryFacade.checkWhetherPriorityIsNotUsed(anyInt())).isInstanceOf(BadRequestException.class);
     }
 
     @Test
     void should_priority_is_not_used() {
-        when(nutritionalValueQueryRepository.existsByPriority(anyFloat())).thenReturn(false);
+        when(nutritionalValueQueryRepository.existsByPriority(anyInt())).thenReturn(false);
 
-        boolean result = nutritionalValueQueryFacade.checkWhetherPriorityIsNotUsed(anyFloat());
+        boolean result = nutritionalValueQueryFacade.checkWhetherPriorityIsNotUsed(anyInt());
 
         assertThat(result).isTrue();
     }

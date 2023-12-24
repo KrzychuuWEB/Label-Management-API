@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 interface NutritionalValueQueryRepository extends JpaRepository<NutritionalValue, Long> {
 
-    boolean existsByPriority(Float priority);
+    boolean existsByPriority(Integer priority);
 }

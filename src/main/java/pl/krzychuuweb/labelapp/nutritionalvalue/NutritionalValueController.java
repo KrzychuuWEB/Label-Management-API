@@ -11,7 +11,7 @@ import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueDTO;
 import java.util.List;
 
 @RestController
-@RequestMapping("/nutritionalvalues")
+@RequestMapping("/nutritional-values")
 class NutritionalValueController {
 
     private final NutritionalValueQueryFacade nutritionalValueQueryFacade;
