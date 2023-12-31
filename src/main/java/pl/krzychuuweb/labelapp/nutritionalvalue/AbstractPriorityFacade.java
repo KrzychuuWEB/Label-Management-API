@@ -7,13 +7,13 @@ import pl.krzychuuweb.labelapp.nutritionalvalue.dto.ChangeNutritionalValuePriori
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AbstractPriorityFacade<T extends Priority>{
+public abstract class AbstractPriorityFacade<T extends Priority> {
 
     private final PriorityRepository<T> priorityRepository;
 
     private final PriorityQueryFacade<T> priorityQueryFacade;
 
-    AbstractPriorityFacade(PriorityRepository<T> priorityRepository, PriorityQueryFacade<T> priorityQueryFacade) {
+    protected AbstractPriorityFacade(PriorityRepository<T> priorityRepository, PriorityQueryFacade<T> priorityQueryFacade) {
         this.priorityRepository = priorityRepository;
         this.priorityQueryFacade = priorityQueryFacade;
     }

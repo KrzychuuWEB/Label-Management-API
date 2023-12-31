@@ -1,9 +1,10 @@
-package pl.krzychuuweb.labelapp.subnutritionalvalue;
+package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue;
 
+import pl.krzychuuweb.labelapp.nutritionalvalue.PriorityFacade;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
 
-public interface SubNutritionalValueFacade {
+public interface SubNutritionalValueFacade extends PriorityFacade<SubNutritionalValue> {
 
     SubNutritionalValue add(final CreateNutritionalValueDTO createNutritionalValueDTO, Long nutritionalId);
 

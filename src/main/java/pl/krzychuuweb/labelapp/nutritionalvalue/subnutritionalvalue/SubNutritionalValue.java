@@ -1,11 +1,12 @@
-package pl.krzychuuweb.labelapp.subnutritionalvalue;
+package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue;
 
 import jakarta.persistence.*;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
+import pl.krzychuuweb.labelapp.nutritionalvalue.Priority;
 
 @Entity
 @Table(name = "sub_nutritional_values")
-public class SubNutritionalValue {
+public class SubNutritionalValue implements Priority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

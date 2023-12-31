@@ -1,14 +1,15 @@
-package pl.krzychuuweb.labelapp.subnutritionalvalue;
+package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import pl.krzychuuweb.labelapp.nutritionalvalue.AbstractPriorityFacade;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValueQueryFacade;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
 
 @Service
-class SubNutritionalValueFacadeImpl implements SubNutritionalValueFacade {
+class SubNutritionalValueFacadeImpl extends AbstractPriorityFacade<SubNutritionalValue> implements SubNutritionalValueFacade {
 
     private final SubNutritionalValueRepository subNutritionalValueRepository;
 
@@ -24,6 +25,7 @@ class SubNutritionalValueFacadeImpl implements SubNutritionalValueFacade {
             NutritionalValueQueryFacade nutritionalValueQueryFacade,
             SubNutritionalValueQueryFacade subNutritionalValueQueryFacade
     ) {
+        super(subNutritionalValueRepository, subNutritionalValueQueryFacade);
         this.subNutritionalValueRepository = subNutritionalValueRepository;
         this.subNutritionalValueFactory = subNutritionalValueFactory;
         this.nutritionalValueQueryFacade = nutritionalValueQueryFacade;

@@ -1,7 +1,7 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue.dto;
 
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
-import pl.krzychuuweb.labelapp.subnutritionalvalue.dto.SubNutritionalValueDTO;
+import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.dto.SubNutritionalValueDTO;
 
 import java.time.LocalDateTime;
 import java.util.List;

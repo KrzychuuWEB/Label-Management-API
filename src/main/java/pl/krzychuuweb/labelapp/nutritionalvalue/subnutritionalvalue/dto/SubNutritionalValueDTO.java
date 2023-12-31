@@ -1,6 +1,6 @@
-package pl.krzychuuweb.labelapp.subnutritionalvalue.dto;
+package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.dto;
 
-import pl.krzychuuweb.labelapp.subnutritionalvalue.SubNutritionalValue;
+import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValue;
 
 import java.util.List;
 import java.util.stream.Stream;

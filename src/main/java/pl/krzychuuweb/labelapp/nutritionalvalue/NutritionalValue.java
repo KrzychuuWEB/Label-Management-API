@@ -2,7 +2,7 @@ package pl.krzychuuweb.labelapp.nutritionalvalue;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import pl.krzychuuweb.labelapp.subnutritionalvalue.SubNutritionalValue;
+import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValue;
 
 import java.time.LocalDateTime;
 import java.util.List;

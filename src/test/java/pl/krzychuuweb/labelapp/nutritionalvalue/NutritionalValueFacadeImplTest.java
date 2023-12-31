@@ -12,6 +12,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Java6Assertions.tuple;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -116,16 +117,21 @@ class NutritionalValueFacadeImplTest {
         List<NutritionalValue> result = nutritionalValueFacade.editPriority(changeNutritionalValuePriorityDTO);
 
         assertThat(result).hasSize(5);
-        assertThat(result.get(0).getId()).isEqualTo(1L);
-        assertThat(result.get(0).getPriority()).isEqualTo(1);
-        assertThat(result.get(1).getId()).isEqualTo(2L);
-        assertThat(result.get(1).getPriority()).isEqualTo(4);
-        assertThat(result.get(2).getId()).isEqualTo(3L);
-        assertThat(result.get(2).getPriority()).isEqualTo(2);
-        assertThat(result.get(3).getId()).isEqualTo(4L);
-        assertThat(result.get(3).getPriority()).isEqualTo(3);
-        assertThat(result.get(4).getId()).isEqualTo(5L);
-        assertThat(result.get(4).getPriority()).isEqualTo(5);
+        assertThat(result)
+                .extracting(NutritionalValue::getId, NutritionalValue::getPriority)
+                .contains(tuple(1L, 1));
+        assertThat(result)
+                .extracting(NutritionalValue::getId, NutritionalValue::getPriority)
+                .contains(tuple(2L, 4));
+        assertThat(result)
+                .extracting(NutritionalValue::getId, NutritionalValue::getPriority)
+                .contains(tuple(3L, 2));
+        assertThat(result)
+                .extracting(NutritionalValue::getId, NutritionalValue::getPriority)
+                .contains(tuple(4L, 3));
+        assertThat(result)
+                .extracting(NutritionalValue::getId, NutritionalValue::getPriority)
+                .contains(tuple(5L, 5));
     }
 
     @Test
@@ -158,16 +164,21 @@ class NutritionalValueFacadeImplTest {
         List<NutritionalValue> result = nutritionalValueFacade.editPriority(changeNutritionalValuePriorityDTO);
 
         assertThat(result).hasSize(5);
-        assertThat(result.get(0).getId()).isEqualTo(1L);
-        assertThat(result.get(0).getPriority()).isEqualTo(1);
-        assertThat(result.get(1).getId()).isEqualTo(2L);
-        assertThat(result.get(1).getPriority()).isEqualTo(3);
-        assertThat(result.get(2).getId()).isEqualTo(3L);
-        assertThat(result.get(2).getPriority()).isEqualTo(4);
-        assertThat(result.get(3).getId()).isEqualTo(4L);
-        assertThat(result.get(3).getPriority()).isEqualTo(2);
-        assertThat(result.get(4).getId()).isEqualTo(5L);
-        assertThat(result.get(4).getPriority()).isEqualTo(5);
+        assertThat(result)
+                .extracting(NutritionalValue::getId, NutritionalValue::getPriority)
+                .contains(tuple(1L, 1));
+        assertThat(result)
+                .extracting(NutritionalValue::getId, NutritionalValue::getPriority)
+                .contains(tuple(2L, 3));
+        assertThat(result)
+                .extracting(NutritionalValue::getId, NutritionalValue::getPriority)
+                .contains(tuple(3L, 4));
+        assertThat(result)
+                .extracting(NutritionalValue::getId, NutritionalValue::getPriority)
+                .contains(tuple(4L, 2));
+        assertThat(result)
+                .extracting(NutritionalValue::getId, NutritionalValue::getPriority)
+                .contains(tuple(5L, 5));
     }
 
     @Test

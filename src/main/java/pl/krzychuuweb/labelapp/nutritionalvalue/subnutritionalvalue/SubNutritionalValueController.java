@@ -1,12 +1,15 @@
-package pl.krzychuuweb.labelapp.subnutritionalvalue;
+package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
+import pl.krzychuuweb.labelapp.nutritionalvalue.dto.ChangeNutritionalValuePriorityDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
-import pl.krzychuuweb.labelapp.subnutritionalvalue.dto.SubNutritionalValueDTO;
+import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.dto.SubNutritionalValueDTO;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/nutritional-values")
@@ -39,6 +42,19 @@ class SubNutritionalValueController {
         }
 
         return SubNutritionalValueDTO.mapSubNutritionalValueToDTO(subNutritionalValueFacade.edit(editNutritionalValueDTO));
+    }
+
+    @PutMapping("/sub/{id}/priority")
+    @ResponseStatus(HttpStatus.OK)
+    @Secured("ROLE_ADMIN")
+    List<SubNutritionalValueDTO> editPriority(@PathVariable Long id, @RequestBody ChangeNutritionalValuePriorityDTO changeNutritionalValuePriorityDTO) {
+        if (!id.equals(changeNutritionalValuePriorityDTO.id())) {
+            throw new BadRequestException("Id is not the same!");
+        }
+
+        return SubNutritionalValueDTO.mapToSubNutritionalValueList(
+                subNutritionalValueFacade.editPriority(changeNutritionalValuePriorityDTO)
+        );
     }
 
     @DeleteMapping("/sub/{id}")

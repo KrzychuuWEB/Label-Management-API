@@ -1,15 +1,18 @@
-package pl.krzychuuweb.labelapp.subnutritionalvalue;
+package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue;
 
 import org.springframework.stereotype.Service;
-import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
 import pl.krzychuuweb.labelapp.exceptions.NotFoundException;
+import pl.krzychuuweb.labelapp.nutritionalvalue.AbstractPriorityQueryFacade;
+
+import java.util.List;
 
 @Service
-class SubNutritionalValueQueryFacadeImpl implements SubNutritionalValueQueryFacade {
+class SubNutritionalValueQueryFacadeImpl extends AbstractPriorityQueryFacade<SubNutritionalValue> implements SubNutritionalValueQueryFacade {
 
     private final SubNutritionalValueQueryRepository subNutritionalValueQueryRepository;
 
     SubNutritionalValueQueryFacadeImpl(SubNutritionalValueQueryRepository subNutritionalValueQueryRepository) {
+        super(subNutritionalValueQueryRepository);
         this.subNutritionalValueQueryRepository = subNutritionalValueQueryRepository;
     }
 
@@ -19,11 +22,7 @@ class SubNutritionalValueQueryFacadeImpl implements SubNutritionalValueQueryFaca
     }
 
     @Override
-    public boolean checkWhetherPriorityIsNotUsed(final Integer priority) {
-        if (subNutritionalValueQueryRepository.existsByPriority(priority)) {
-            throw new BadRequestException("This priority has been used");
-        }
-
-        return true;
+    public List<SubNutritionalValue> getAll() {
+        return subNutritionalValueQueryRepository.findAll();
     }
 }

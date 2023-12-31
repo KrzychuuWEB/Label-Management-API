@@ -8,7 +8,7 @@ public abstract class AbstractPriorityQueryFacade<T extends Priority> {
 
     private final PriorityQueryRepository<T> priorityQueryRepository;
 
-    AbstractPriorityQueryFacade(PriorityQueryRepository<T> priorityQueryRepository) {
+    protected AbstractPriorityQueryFacade(PriorityQueryRepository<T> priorityQueryRepository) {
         this.priorityQueryRepository = priorityQueryRepository;
     }
 

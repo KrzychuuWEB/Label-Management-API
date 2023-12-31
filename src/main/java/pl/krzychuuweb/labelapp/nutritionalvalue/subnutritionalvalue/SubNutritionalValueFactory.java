@@ -1,4 +1,4 @@
-package pl.krzychuuweb.labelapp.subnutritionalvalue;
+package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue;
 
 import org.springframework.stereotype.Component;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;

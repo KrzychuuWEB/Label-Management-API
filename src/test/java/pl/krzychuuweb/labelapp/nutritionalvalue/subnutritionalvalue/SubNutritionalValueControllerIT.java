@@ -1,5 +1,6 @@
-package pl.krzychuuweb.labelapp.subnutritionalvalue;
+package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,12 @@ import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
 import pl.krzychuuweb.labelapp.exceptions.NotFoundException;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValueFacade;
+import pl.krzychuuweb.labelapp.nutritionalvalue.dto.ChangeNutritionalValuePriorityDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
+import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.dto.SubNutritionalValueDTO;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -38,6 +43,9 @@ class SubNutritionalValueControllerIT extends IntegrationTestConfig {
 
     @Autowired
     private SubNutritionalValueQueryFacade subNutritionalValueQueryFacade;
+
+    @Autowired
+    private SubNutritionalValueFacade subNutritionalValueFacade;
 
     @Test
     @Transactional
@@ -111,5 +119,48 @@ class SubNutritionalValueControllerIT extends IntegrationTestConfig {
                 .andReturn();
 
         assertThatThrownBy(() -> subNutritionalValueQueryFacade.getById(subNutritionalValue.getId())).isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    @Transactional
+    void should_edit_sub_nutritional_value_priority() throws Exception {
+        NutritionalValue nutritionalValue = nutritionalValueFacade.add(new CreateNutritionalValueDTO("parent", 1));
+        SubNutritionalValue nutritionalValue1 = subNutritionalValueFacade.add(new CreateNutritionalValueDTO("one", 1), nutritionalValue.getId());
+        SubNutritionalValue nutritionalValue2 = subNutritionalValueFacade.add(new CreateNutritionalValueDTO("two", 2), nutritionalValue.getId());
+        SubNutritionalValue nutritionalValue3 = subNutritionalValueFacade.add(new CreateNutritionalValueDTO("three", 3), nutritionalValue.getId());
+        SubNutritionalValue nutritionalValue4 = subNutritionalValueFacade.add(new CreateNutritionalValueDTO("four", 4), nutritionalValue.getId());
+        SubNutritionalValue nutritionalValue5 = subNutritionalValueFacade.add(new CreateNutritionalValueDTO("five", 5), nutritionalValue.getId());
+        ChangeNutritionalValuePriorityDTO changeNutritionalValuePriorityDTO = new ChangeNutritionalValuePriorityDTO(nutritionalValue2.getId(), 4);
+
+        MvcResult response = mockMvc.perform(put("/nutritional-values/sub/" + nutritionalValue2.getId() + "/priority")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(changeNutritionalValuePriorityDTO))
+                )
+                .andExpect(status().isOk())
+                .andReturn();
+
+        List<SubNutritionalValueDTO> result = objectMapper.readValue(response.getResponse().getContentAsString(), new TypeReference<>() {
+        });
+
+        assertThat(getNutritionalValueFromList(result, nutritionalValue1.getId()).priority()).isEqualTo(1);
+        assertThat(getNutritionalValueFromList(result, nutritionalValue2.getId()).priority()).isEqualTo(changeNutritionalValuePriorityDTO.priority());
+        assertThat(getNutritionalValueFromList(result, nutritionalValue3.getId()).priority()).isEqualTo(2);
+        assertThat(getNutritionalValueFromList(result, nutritionalValue4.getId()).priority()).isEqualTo(3);
+        assertThat(getNutritionalValueFromList(result, nutritionalValue5.getId()).priority()).isEqualTo(5);
+    }
+
+    @Test
+    void should_edit_sub_nutritional_value_priority_but_priority_is_not_same() throws Exception {
+        ChangeNutritionalValuePriorityDTO changeNutritionalValuePriorityDTO = new ChangeNutritionalValuePriorityDTO(2L, 4);
+
+        mockMvc.perform(put("/nutritional-values/sub/" + (changeNutritionalValuePriorityDTO.id() + 1L) + "/priority")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(changeNutritionalValuePriorityDTO))
+                )
+                .andExpect(result -> assertThat(result.getResolvedException()).isInstanceOf(BadRequestException.class));
+    }
+
+    private SubNutritionalValueDTO getNutritionalValueFromList(final List<SubNutritionalValueDTO> list, final Long nutritionalId) {
+        return list.stream().filter(nv -> nv.id().equals(nutritionalId)).findFirst().orElse(null);
     }
 }
