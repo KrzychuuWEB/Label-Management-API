@@ -9,7 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "nutritional_values")
-public class NutritionalValue {
+public class NutritionalValue implements Priority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

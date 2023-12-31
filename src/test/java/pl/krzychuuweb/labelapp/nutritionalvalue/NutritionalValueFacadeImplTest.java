@@ -3,10 +3,15 @@ package pl.krzychuuweb.labelapp.nutritionalvalue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
+import pl.krzychuuweb.labelapp.nutritionalvalue.dto.ChangeNutritionalValuePriorityDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
@@ -79,5 +84,101 @@ class NutritionalValueFacadeImplTest {
         nutritionalValueFacade.delete(anyLong());
 
         verify(nutritionalValueRepository, times(1)).delete(nutritionalValue);
+    }
+
+    @Test
+    void should_edit_priority_is_success_priority_is_asc() {
+        ChangeNutritionalValuePriorityDTO changeNutritionalValuePriorityDTO = new ChangeNutritionalValuePriorityDTO(2L, 4);
+        NutritionalValue nutritionalValue = NutritionalValue.NutritionalValueBuilder.aNutritionalValue()
+                .withId(2L)
+                .withPriority(2)
+                .build();
+
+        List<NutritionalValue> listFromDb = List.of(
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(2).withId(2L).build(),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(3).withId(3L).build(),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(4).withId(4L).build()
+        );
+
+        when(nutritionalValueQueryFacade.getById(anyLong())).thenReturn(nutritionalValue);
+        when(nutritionalValueQueryFacade.getAllByPriorityBetweenRange(2, 4)).thenReturn(listFromDb);
+        when(nutritionalValueRepository.saveAll(any())).thenReturn(listFromDb);
+
+        List<NutritionalValue> listToResult = List.of(
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(1).withId(1L).build(),
+                listFromDb.get(0),
+                listFromDb.get(1),
+                listFromDb.get(2),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(5).withId(5L).build()
+        );
+
+        when(nutritionalValueQueryFacade.getAll()).thenReturn(listToResult);
+        List<NutritionalValue> result = nutritionalValueFacade.editPriority(changeNutritionalValuePriorityDTO);
+
+        assertThat(result).hasSize(5);
+        assertThat(result.get(0).getId()).isEqualTo(1L);
+        assertThat(result.get(0).getPriority()).isEqualTo(1);
+        assertThat(result.get(1).getId()).isEqualTo(2L);
+        assertThat(result.get(1).getPriority()).isEqualTo(4);
+        assertThat(result.get(2).getId()).isEqualTo(3L);
+        assertThat(result.get(2).getPriority()).isEqualTo(2);
+        assertThat(result.get(3).getId()).isEqualTo(4L);
+        assertThat(result.get(3).getPriority()).isEqualTo(3);
+        assertThat(result.get(4).getId()).isEqualTo(5L);
+        assertThat(result.get(4).getPriority()).isEqualTo(5);
+    }
+
+    @Test
+    void should_edit_priority_is_success_priority_is_desc() {
+        ChangeNutritionalValuePriorityDTO changeNutritionalValuePriorityDTO = new ChangeNutritionalValuePriorityDTO(4L, 2);
+        NutritionalValue nutritionalValue = NutritionalValue.NutritionalValueBuilder.aNutritionalValue()
+                .withId(4L)
+                .withPriority(4)
+                .build();
+
+        List<NutritionalValue> listFromDb = List.of(
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(2).withId(2L).build(),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(3).withId(3L).build(),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(4).withId(4L).build()
+        );
+
+        when(nutritionalValueQueryFacade.getById(anyLong())).thenReturn(nutritionalValue);
+        when(nutritionalValueQueryFacade.getAllByPriorityBetweenRange(2, 4)).thenReturn(listFromDb);
+        when(nutritionalValueRepository.saveAll(any())).thenReturn(listFromDb);
+
+        List<NutritionalValue> listToResult = List.of(
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(1).withId(1L).build(),
+                listFromDb.get(0),
+                listFromDb.get(1),
+                listFromDb.get(2),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(5).withId(5L).build()
+        );
+
+        when(nutritionalValueQueryFacade.getAll()).thenReturn(listToResult);
+        List<NutritionalValue> result = nutritionalValueFacade.editPriority(changeNutritionalValuePriorityDTO);
+
+        assertThat(result).hasSize(5);
+        assertThat(result.get(0).getId()).isEqualTo(1L);
+        assertThat(result.get(0).getPriority()).isEqualTo(1);
+        assertThat(result.get(1).getId()).isEqualTo(2L);
+        assertThat(result.get(1).getPriority()).isEqualTo(3);
+        assertThat(result.get(2).getId()).isEqualTo(3L);
+        assertThat(result.get(2).getPriority()).isEqualTo(4);
+        assertThat(result.get(3).getId()).isEqualTo(4L);
+        assertThat(result.get(3).getPriority()).isEqualTo(2);
+        assertThat(result.get(4).getId()).isEqualTo(5L);
+        assertThat(result.get(4).getPriority()).isEqualTo(5);
+    }
+
+    @Test
+    void should_edit_priority_is_failed() {
+        ChangeNutritionalValuePriorityDTO changeNutritionalValuePriorityDTO = new ChangeNutritionalValuePriorityDTO(1L, 2);
+        NutritionalValue nutritionalValue = NutritionalValue.NutritionalValueBuilder.aNutritionalValue()
+                .withId(1L)
+                .withPriority(2)
+                .build();
+
+        when(nutritionalValueQueryFacade.getById(anyLong())).thenReturn(nutritionalValue);
+        assertThatThrownBy(() -> nutritionalValueFacade.editPriority(changeNutritionalValuePriorityDTO)).isInstanceOf(BadRequestException.class);
     }
 }

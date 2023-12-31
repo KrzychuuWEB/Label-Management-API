@@ -1,11 +1,12 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
 
 @Service
-class NutritionalValueFacadeImpl implements NutritionalValueFacade {
+class NutritionalValueFacadeImpl extends AbstractPriorityFacade<NutritionalValue> implements NutritionalValueFacade {
 
     private final NutritionalValueRepository nutritionalValueRepository;
 
@@ -14,6 +15,7 @@ class NutritionalValueFacadeImpl implements NutritionalValueFacade {
     private final NutritionalValueFactory nutritionalValueFactory;
 
     NutritionalValueFacadeImpl(final NutritionalValueRepository nutritionalValueRepository, NutritionalValueQueryFacade nutritionalValueQueryFacade, NutritionalValueFactory nutritionalValueFactory) {
+        super(nutritionalValueRepository, nutritionalValueQueryFacade);
         this.nutritionalValueRepository = nutritionalValueRepository;
         this.nutritionalValueQueryFacade = nutritionalValueQueryFacade;
         this.nutritionalValueFactory = nutritionalValueFactory;
@@ -27,6 +29,7 @@ class NutritionalValueFacadeImpl implements NutritionalValueFacade {
     }
 
     @Override
+    @Transactional
     public NutritionalValue edit(final EditNutritionalValueDTO editNutritionalValueDTO) {
         NutritionalValue nutritionalValue = nutritionalValueQueryFacade.getById(editNutritionalValueDTO.id());
 
@@ -36,6 +39,7 @@ class NutritionalValueFacadeImpl implements NutritionalValueFacade {
     }
 
     @Override
+    @Transactional
     public void delete(final Long id) {
         NutritionalValue nutritionalValue = nutritionalValueQueryFacade.getById(id);
 

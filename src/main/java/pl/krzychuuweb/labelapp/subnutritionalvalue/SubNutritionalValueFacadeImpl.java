@@ -1,5 +1,6 @@
 package pl.krzychuuweb.labelapp.subnutritionalvalue;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValueQueryFacade;
@@ -40,6 +41,7 @@ class SubNutritionalValueFacadeImpl implements SubNutritionalValueFacade {
     }
 
     @Override
+    @Transactional
     public SubNutritionalValue edit(final EditNutritionalValueDTO editNutritionalValueDTO) {
         SubNutritionalValue subNutritionalValue = subNutritionalValueQueryFacade.getById(editNutritionalValueDTO.id());
         subNutritionalValue.setName(editNutritionalValueDTO.name());
@@ -48,6 +50,7 @@ class SubNutritionalValueFacadeImpl implements SubNutritionalValueFacade {
     }
 
     @Override
+    @Transactional
     public void delete(final Long id) {
         SubNutritionalValue subNutritionalValue = subNutritionalValueQueryFacade.getById(id);
 

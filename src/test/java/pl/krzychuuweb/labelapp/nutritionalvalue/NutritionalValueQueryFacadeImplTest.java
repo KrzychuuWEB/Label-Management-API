@@ -72,11 +72,17 @@ class NutritionalValueQueryFacadeImplTest {
     }
 
     @Test
-    void should_priority_is_not_used() {
-        when(nutritionalValueQueryRepository.existsByPriority(anyInt())).thenReturn(false);
+    void should_get_all_by_priority_between_min_and_max() {
+        List<NutritionalValue> nutritionalValueList = List.of(
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(2).build(),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(3).build(),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(4).build()
+        );
 
-        boolean result = nutritionalValueQueryFacade.checkWhetherPriorityIsNotUsed(anyInt());
+        when(nutritionalValueQueryRepository.findAllByPriorityBetween(anyInt(), anyInt())).thenReturn(nutritionalValueList);
 
-        assertThat(result).isTrue();
+        List<NutritionalValue> result = nutritionalValueQueryFacade.getAllByPriorityBetweenRange(anyInt(), anyInt());
+
+        assertThat(result).hasSize(3);
     }
 }

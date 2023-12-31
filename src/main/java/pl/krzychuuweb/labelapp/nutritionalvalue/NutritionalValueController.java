@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
+import pl.krzychuuweb.labelapp.nutritionalvalue.dto.ChangeNutritionalValuePriorityDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueDTO;
@@ -49,6 +50,19 @@ class NutritionalValueController {
 
         return NutritionalValueDTO.mapNutritionalValueToNutritionalValueDTO(
                 nutritionalValueFacade.edit(editNutritionalValueDTO)
+        );
+    }
+
+    @PutMapping("/{id}/priority")
+    @Secured("ROLE_ADMIN")
+    @ResponseStatus(HttpStatus.OK)
+    List<NutritionalValueDTO> editPriority(@PathVariable Long id, @RequestBody ChangeNutritionalValuePriorityDTO changeNutritionalValuePriorityDTO) {
+        if (!id.equals(changeNutritionalValuePriorityDTO.id())) {
+            throw new BadRequestException("Id is not the same");
+        }
+
+        return NutritionalValueDTO.mapNutritionalValueListToNutritionalValueDTO(
+                nutritionalValueFacade.editPriority(changeNutritionalValuePriorityDTO)
         );
     }
 
