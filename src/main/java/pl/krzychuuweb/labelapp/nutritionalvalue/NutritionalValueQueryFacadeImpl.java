@@ -1,7 +1,7 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue;
 
 import org.springframework.stereotype.Service;
-import pl.krzychuuweb.labelapp.exceptions.NotFoundException;
+import pl.krzychuuweb.labelapp.exception.NotFoundException;
 
 import java.util.List;
 

@@ -5,13 +5,24 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import pl.krzychuuweb.labelapp.user.User;
+import pl.krzychuuweb.labelapp.user.UserQueryFacade;
 
 @Service
 class AuthQueryFacadeImpl implements AuthQueryFacade {
 
+    private final UserQueryFacade userQueryFacade;
+
+    AuthQueryFacadeImpl(UserQueryFacade userQueryFacade) {
+        this.userQueryFacade = userQueryFacade;
+    }
+
     @Override
     public String getLoggedUserEmail() {
         return getAuthentication().getName();
+    }
+
+    public User getLoggedUser() {
+        return userQueryFacade.getUserByEmail(getLoggedUserEmail());
     }
 
     @Override

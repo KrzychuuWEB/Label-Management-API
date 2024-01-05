@@ -1,7 +1,7 @@
 package pl.krzychuuweb.labelapp.role;
 
 import org.springframework.stereotype.Service;
-import pl.krzychuuweb.labelapp.exceptions.NotFoundException;
+import pl.krzychuuweb.labelapp.exception.NotFoundException;
 import pl.krzychuuweb.labelapp.user.User;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package pl.krzychuuweb.labelapp.exceptions;
+package pl.krzychuuweb.labelapp.exception;
 
 
 import org.springframework.http.HttpStatus;

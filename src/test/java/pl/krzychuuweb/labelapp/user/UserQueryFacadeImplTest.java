@@ -3,8 +3,8 @@ package pl.krzychuuweb.labelapp.user;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import pl.krzychuuweb.labelapp.exceptions.AlreadyExistsException;
-import pl.krzychuuweb.labelapp.exceptions.NotFoundException;
+import pl.krzychuuweb.labelapp.exception.AlreadyExistsException;
+import pl.krzychuuweb.labelapp.exception.NotFoundException;
 import pl.krzychuuweb.labelapp.role.Role;
 import pl.krzychuuweb.labelapp.role.UserRole;
 

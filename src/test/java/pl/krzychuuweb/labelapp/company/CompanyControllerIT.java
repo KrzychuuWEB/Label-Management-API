@@ -13,7 +13,7 @@ import pl.krzychuuweb.labelapp.IntegrationTestConfig;
 import pl.krzychuuweb.labelapp.company.dto.CompanyCreateDTO;
 import pl.krzychuuweb.labelapp.company.dto.CompanyDTO;
 import pl.krzychuuweb.labelapp.company.dto.CompanyEditDTO;
-import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
+import pl.krzychuuweb.labelapp.exception.BadRequestException;
 import pl.krzychuuweb.labelapp.user.User;
 import pl.krzychuuweb.labelapp.user.UserFacade;
 import pl.krzychuuweb.labelapp.user.dto.UserCreateDTO;

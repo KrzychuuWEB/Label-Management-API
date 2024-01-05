@@ -1,6 +1,6 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue;
 
-import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
+import pl.krzychuuweb.labelapp.exception.BadRequestException;
 
 import java.util.List;
 

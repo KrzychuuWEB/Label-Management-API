@@ -8,4 +8,6 @@ public interface AuthQueryFacade {
     String getLoggedUserEmail();
 
     boolean whetherUserHasAssignmentForResource(User user) throws AccessDeniedException;
+
+    User getLoggedUser();
 }

@@ -44,6 +44,7 @@ class CompanyFacadeImplTest {
         Company company = Company.CompanyBuilder.aCompany().withName("companyName").withFooter("companyFooter").build();
         CompanyCreateDTO companyCreateDTO = new CompanyCreateDTO(company.getName(), company.getFooter());
 
+        when(companyQueryFacade.checkWhetherCompanyNameIsNotUsedForLoggedUser(anyString())).thenReturn(true);
         when(companyRepository.save(any())).thenReturn(company);
 
         Company result = companyFacade.addCompany(companyCreateDTO);
@@ -58,6 +59,7 @@ class CompanyFacadeImplTest {
         User user = User.UserBuilder.anUser().withId(1L).withEmail("email2@email.com").build();
         Company company = Company.CompanyBuilder.aCompany().withName(companyEditDTO.name()).withFooter(companyEditDTO.footer()).withUser(user).build();
 
+        when(companyQueryFacade.checkWhetherCompanyNameIsNotUsedForLoggedUser(anyString())).thenReturn(true);
         when(companyQueryFacade.getById(anyLong())).thenReturn(company);
         when(companyRepository.save(any())).thenReturn(company);
 

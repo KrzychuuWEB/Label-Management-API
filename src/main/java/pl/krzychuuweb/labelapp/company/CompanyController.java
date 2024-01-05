@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import pl.krzychuuweb.labelapp.company.dto.CompanyCreateDTO;
 import pl.krzychuuweb.labelapp.company.dto.CompanyDTO;
 import pl.krzychuuweb.labelapp.company.dto.CompanyEditDTO;
-import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
+import pl.krzychuuweb.labelapp.exception.BadRequestException;
 import pl.krzychuuweb.labelapp.security.ownership.CheckOwnership;
 
 import java.util.List;

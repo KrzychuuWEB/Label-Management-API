@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.krzychuuweb.labelapp.company.Company;
+import pl.krzychuuweb.labelapp.initial.Initial;
 import pl.krzychuuweb.labelapp.role.Role;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,9 @@ public class User implements UserDetails {
 
     @ManyToMany(mappedBy = "users")
     private Set<Role> roles = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Initial> initials = new ArrayList<>();
 
     User() {
     }
@@ -68,14 +72,6 @@ public class User implements UserDetails {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public List<Company> getCompanies() {
-        return companies;
-    }
-
-    public void setCompanies(final List<Company> companies) {
-        this.companies = companies;
     }
 
     @Override

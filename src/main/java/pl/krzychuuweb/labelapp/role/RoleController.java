@@ -1,5 +1,6 @@
 package pl.krzychuuweb.labelapp.role;
 
+import jakarta.validation.Valid;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,7 +23,7 @@ class RoleController {
     }
 
     @PostMapping
-    List<RoleDTO> assignRoleForUser(@RequestBody AssignRoleDTO assignRoleDTO) {
+    List<RoleDTO> assignRoleForUser(@Valid @RequestBody AssignRoleDTO assignRoleDTO) {
         UserRole userRole = UserRole.changeStringToUserRole(assignRoleDTO.roleName());
         return RoleDTO.mapRoleListToRoleDTOList(roleFacade.assignRole(assignRoleDTO.userId(), userRole));
     }

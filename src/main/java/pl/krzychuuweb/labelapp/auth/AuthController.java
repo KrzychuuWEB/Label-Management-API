@@ -1,5 +1,6 @@
 package pl.krzychuuweb.labelapp.auth;
 
+import jakarta.validation.Valid;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,7 +35,7 @@ class AuthController {
     }
 
     @PostMapping("/login")
-    AuthDTO authenticate(@RequestBody LoginDTO loginDTO) {
+    AuthDTO authenticate(@Valid @RequestBody LoginDTO loginDTO) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDTO.email(), loginDTO.password())
         );
@@ -47,7 +48,7 @@ class AuthController {
     }
 
     @PostMapping("/register")
-    AuthDTO register(@RequestBody UserCreateDTO userCreateDTO) {
+    AuthDTO register(@Valid @RequestBody UserCreateDTO userCreateDTO) {
         User user = userFacade.addUser(userCreateDTO);
         String jwt = jwtService.generateToken(user);
 

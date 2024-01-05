@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import pl.krzychuuweb.labelapp.auth.AuthQueryFacade;
 import pl.krzychuuweb.labelapp.company.dto.CompanyCreateDTO;
 import pl.krzychuuweb.labelapp.company.dto.CompanyEditDTO;
+import pl.krzychuuweb.labelapp.exception.BadRequestException;
 import pl.krzychuuweb.labelapp.user.User;
 import pl.krzychuuweb.labelapp.user.UserQueryFacade;
 
@@ -32,6 +33,10 @@ class CompanyFacadeImpl implements CompanyFacade {
 
     @Override
     public Company addCompany(final CompanyCreateDTO companyCreateDTO) {
+        if (!companyQueryFacade.checkWhetherCompanyNameIsNotUsedForLoggedUser(companyCreateDTO.name())) {
+            throw new BadRequestException("Company is not create because company name is exists!");
+        }
+
         User user = userQueryFacade.getUserByEmail(authQueryFacade.getLoggedUserEmail());
 
         return companyRepository.save(CompanyFactory.createCompany(companyCreateDTO, user));
@@ -39,6 +44,10 @@ class CompanyFacadeImpl implements CompanyFacade {
 
     @Override
     public Company updateCompany(final CompanyEditDTO companyEditDTO) {
+        if (!companyQueryFacade.checkWhetherCompanyNameIsNotUsedForLoggedUser(companyEditDTO.name())) {
+            throw new BadRequestException("Company is not edit because company name is exists!");
+        }
+
         Company company = companyQueryFacade.getById(companyEditDTO.id());
 
         company.setName(companyEditDTO.name());

@@ -2,8 +2,8 @@ package pl.krzychuuweb.labelapp.user;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import pl.krzychuuweb.labelapp.exceptions.AlreadyExistsException;
-import pl.krzychuuweb.labelapp.exceptions.NotFoundException;
+import pl.krzychuuweb.labelapp.exception.AlreadyExistsException;
+import pl.krzychuuweb.labelapp.exception.NotFoundException;
 import pl.krzychuuweb.labelapp.user.dto.UserCreateDTO;
 import pl.krzychuuweb.labelapp.user.dto.UserEditDTO;
 

@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
+import pl.krzychuuweb.labelapp.exception.BadRequestException;
 import pl.krzychuuweb.labelapp.security.ownership.CheckOwnership;
 import pl.krzychuuweb.labelapp.user.dto.UserCreateDTO;
 import pl.krzychuuweb.labelapp.user.dto.UserDTO;

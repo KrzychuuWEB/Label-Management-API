@@ -1,7 +1,7 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue;
 
 import jakarta.transaction.Transactional;
-import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
+import pl.krzychuuweb.labelapp.exception.BadRequestException;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.ChangeNutritionalValuePriorityDTO;
 
 import java.util.Comparator;

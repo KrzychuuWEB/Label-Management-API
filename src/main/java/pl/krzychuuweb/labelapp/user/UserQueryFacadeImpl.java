@@ -1,8 +1,8 @@
 package pl.krzychuuweb.labelapp.user;
 
 import org.springframework.stereotype.Service;
-import pl.krzychuuweb.labelapp.exceptions.AlreadyExistsException;
-import pl.krzychuuweb.labelapp.exceptions.NotFoundException;
+import pl.krzychuuweb.labelapp.exception.AlreadyExistsException;
+import pl.krzychuuweb.labelapp.exception.NotFoundException;
 
 import java.util.List;
 

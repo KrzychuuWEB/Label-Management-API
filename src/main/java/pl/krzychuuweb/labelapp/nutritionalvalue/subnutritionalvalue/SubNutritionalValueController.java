@@ -1,9 +1,10 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import pl.krzychuuweb.labelapp.exceptions.BadRequestException;
+import pl.krzychuuweb.labelapp.exception.BadRequestException;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.ChangeNutritionalValuePriorityDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
@@ -26,7 +27,7 @@ class SubNutritionalValueController {
     @Secured("ROLE_ADMIN")
     SubNutritionalValueDTO create(
             @PathVariable Long nutritionalId,
-            @RequestBody CreateNutritionalValueDTO createNutritionalValueDTO
+            @Valid @RequestBody CreateNutritionalValueDTO createNutritionalValueDTO
     ) {
         return SubNutritionalValueDTO.mapSubNutritionalValueToDTO(
                 subNutritionalValueFacade.add(createNutritionalValueDTO, nutritionalId)
@@ -36,7 +37,7 @@ class SubNutritionalValueController {
     @PutMapping("/sub/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_ADMIN")
-    SubNutritionalValueDTO edit(@PathVariable Long id, @RequestBody EditNutritionalValueDTO editNutritionalValueDTO) {
+    SubNutritionalValueDTO edit(@PathVariable Long id, @Valid @RequestBody EditNutritionalValueDTO editNutritionalValueDTO) {
         if (!id.equals(editNutritionalValueDTO.id())) {
             throw new BadRequestException("Id is not the same!");
         }
@@ -47,7 +48,7 @@ class SubNutritionalValueController {
     @PutMapping("/sub/{id}/priority")
     @ResponseStatus(HttpStatus.OK)
     @Secured("ROLE_ADMIN")
-    List<SubNutritionalValueDTO> editPriority(@PathVariable Long id, @RequestBody ChangeNutritionalValuePriorityDTO changeNutritionalValuePriorityDTO) {
+    List<SubNutritionalValueDTO> editPriority(@PathVariable Long id, @Valid @RequestBody ChangeNutritionalValuePriorityDTO changeNutritionalValuePriorityDTO) {
         if (!id.equals(changeNutritionalValuePriorityDTO.id())) {
             throw new BadRequestException("Id is not the same!");
         }

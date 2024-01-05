@@ -7,4 +7,6 @@ public interface CompanyQueryFacade {
     Company getById(Long id);
 
     List<Company> getAll();
+
+    boolean checkWhetherCompanyNameIsNotUsedForLoggedUser(final String name);
 }
