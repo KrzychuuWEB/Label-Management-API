@@ -20,7 +20,6 @@ import pl.krzychuuweb.labelapp.user.dto.UserCreateDTO;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.in;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -146,7 +145,7 @@ class InitialControllerIT extends IntegrationTestConfig {
         User user = userFacade.addUser(new UserCreateDTO("firstName", "email@email.com", "password123456"));
         Initial initial = initialRepository.save(Initial.InitialBuilder.anInitial().withFirstName("firstName").withLastName("lastName").withName("name").withUser(user).build());
 
-         mockMvc.perform(delete("/initials/" + initial.getId()))
+        mockMvc.perform(delete("/initials/" + initial.getId()))
                 .andExpect(status().isNoContent())
                 .andReturn();
     }

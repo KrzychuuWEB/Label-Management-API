@@ -4,16 +4,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import pl.krzychuuweb.labelapp.auth.AuthQueryFacade;
-import pl.krzychuuweb.labelapp.company.Company;
 import pl.krzychuuweb.labelapp.exception.BadRequestException;
 import pl.krzychuuweb.labelapp.initial.dto.InitialCreateDTO;
 import pl.krzychuuweb.labelapp.initial.dto.InitialEditDTO;
 import pl.krzychuuweb.labelapp.user.User;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.times;
 
 class InitialFacadeImplTest {
 
