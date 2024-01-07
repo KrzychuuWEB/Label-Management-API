@@ -11,7 +11,8 @@ public record RoleDTO(
         Long id,
 
         UserRole name,
-        UserDTO user) {
+        UserDTO user
+) {
 
     public static List<RoleDTO> mapRoleListToRoleDTOList(List<Role> roles) {
         return roles.stream()
