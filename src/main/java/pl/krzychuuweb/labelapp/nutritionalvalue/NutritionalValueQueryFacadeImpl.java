@@ -24,4 +24,15 @@ class NutritionalValueQueryFacadeImpl extends AbstractPriorityQueryFacade<Nutrit
     public NutritionalValue getById(final Long id) {
         return nutritionalValueQueryRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found nutritional values"));
     }
+
+    @Override
+    public List<NutritionalValue> getAllByListId(final List<Long> idList) {
+        List<NutritionalValue> listFromDB = nutritionalValueQueryRepository.findAllById(idList);
+
+        if (idList.size() != listFromDB.size()) {
+            throw new NotFoundException("Not found nutritional value");
+        }
+
+        return listFromDB;
+    }
 }

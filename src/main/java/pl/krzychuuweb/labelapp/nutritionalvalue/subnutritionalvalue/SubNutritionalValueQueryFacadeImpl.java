@@ -25,4 +25,9 @@ class SubNutritionalValueQueryFacadeImpl extends AbstractPriorityQueryFacade<Sub
     public List<SubNutritionalValue> getAll() {
         return subNutritionalValueQueryRepository.findAll();
     }
+
+    @Override
+    public List<SubNutritionalValue> getAllByListId(final List<Long> idList) {
+        return subNutritionalValueQueryRepository.findAllById(idList);
+    }
 }

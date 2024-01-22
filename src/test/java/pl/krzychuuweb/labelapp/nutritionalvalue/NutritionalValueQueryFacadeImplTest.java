@@ -12,8 +12,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -84,5 +83,22 @@ class NutritionalValueQueryFacadeImplTest {
         List<NutritionalValue> result = nutritionalValueQueryFacade.getAllByPriorityBetweenRange(anyInt(), anyInt());
 
         assertThat(result).hasSize(3);
+    }
+
+    @Test
+    void should_get_all_by_id() {
+        List<Long> idList = List.of(1L, 2L, 3L);
+
+        List<NutritionalValue> nutritionalValueList = List.of(
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(1L).build(),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(2L).build(),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(3L).build()
+        );
+
+        when(nutritionalValueQueryRepository.findAllById(any())).thenReturn(nutritionalValueList);
+
+        List<NutritionalValue> result = nutritionalValueQueryFacade.getAllByListId(idList);
+
+        assertThat(result).hasSameSizeAs(nutritionalValueList);
     }
 }

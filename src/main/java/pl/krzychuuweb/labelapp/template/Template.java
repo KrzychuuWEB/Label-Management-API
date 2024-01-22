@@ -33,6 +33,9 @@ public class Template implements BaseEntity, OwnershipEntity {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    Template() {
+    }
+
     public Long getId() {
         return id;
     }

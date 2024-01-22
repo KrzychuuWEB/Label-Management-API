@@ -1,8 +1,12 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue;
 
 import jakarta.persistence.*;
+import pl.krzychuuweb.labelapp.batch.Batch;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.Priority;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "sub_nutritional_values")
@@ -19,6 +23,9 @@ public class SubNutritionalValue implements Priority {
     @ManyToOne
     @JoinColumn(name = "nutritional_value_id")
     private NutritionalValue nutritionalValue;
+
+    @ManyToMany(mappedBy = "subNutritionalValues")
+    private Set<Batch> batches = new HashSet<>();
 
     SubNutritionalValue() {
     }
@@ -55,6 +62,13 @@ public class SubNutritionalValue implements Priority {
         this.nutritionalValue = nutritionalValue;
     }
 
+    public Set<Batch> getBatches() {
+        return batches;
+    }
+
+    public void setBatches(final Set<Batch> batches) {
+        this.batches = batches;
+    }
 
     public static final class SubNutritionalValueBuilder {
         private Long id;
