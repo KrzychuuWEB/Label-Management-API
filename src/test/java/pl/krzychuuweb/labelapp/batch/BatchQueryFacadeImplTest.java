@@ -5,8 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.krzychuuweb.labelapp.auth.AuthQueryFacade;
-import pl.krzychuuweb.labelapp.user.User;
+import pl.krzychuuweb.labelapp.product.Product;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -20,32 +19,27 @@ class BatchQueryFacadeImplTest {
     @Mock
     private BatchQueryRepository batchQueryRepository;
 
-    @Mock
-    private AuthQueryFacade authQueryFacade;
-
     @InjectMocks
     private BatchQueryFacadeImpl batchQueryFacade;
 
     @Test
-    void should_check_serial_if_serial_is_not_used_by_user() {
-        User user = User.UserBuilder.anUser().withEmail("email@email.com").build();
+    void should_check_serial_if_serial_is_not_used_by_product() {
+        Product product = Product.ProductBuilder.aProduct().build();
 
-        when(authQueryFacade.getLoggedUser()).thenReturn(user);
-        when(batchQueryRepository.existsBySerialAndUser(anyString(), any(User.class))).thenReturn(false);
+        when(batchQueryRepository.existsBySerialAndProduct(anyString(), any(Product.class))).thenReturn(false);
 
-        boolean result = batchQueryFacade.checkWhetherSerialIsNotUsed("serial");
+        boolean result = batchQueryFacade.checkWhetherSerialIsNotUsed("serial", product);
 
         assertTrue(result);
     }
 
     @Test
-    void should_check_serial_if_serial_is_used_by_user() {
-        User user = User.UserBuilder.anUser().withEmail("email@email.com").build();
+    void should_check_serial_if_serial_is_used_by_product() {
+        Product product = Product.ProductBuilder.aProduct().build();
 
-        when(authQueryFacade.getLoggedUser()).thenReturn(user);
-        when(batchQueryRepository.existsBySerialAndUser(anyString(), any(User.class))).thenReturn(true);
+        when(batchQueryRepository.existsBySerialAndProduct(anyString(), any(Product.class))).thenReturn(true);
 
-        boolean result = batchQueryFacade.checkWhetherSerialIsNotUsed("serial");
+        boolean result = batchQueryFacade.checkWhetherSerialIsNotUsed("serial", product);
 
         assertFalse(result);
     }

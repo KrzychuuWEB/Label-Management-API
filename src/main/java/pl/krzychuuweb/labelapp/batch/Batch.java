@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValue;
+import pl.krzychuuweb.labelapp.product.Product;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,6 +30,10 @@ public class Batch {
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @ManyToMany
     @JoinTable(
@@ -103,6 +108,14 @@ public class Batch {
 
     public void setSubNutritionalValues(final Set<SubNutritionalValue> subNutritionalValues) {
         this.subNutritionalValues = subNutritionalValues;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(final Product product) {
+        this.product = product;
     }
 
     public static final class BatchBuilder {

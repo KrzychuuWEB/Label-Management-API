@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.krzychuuweb.labelapp.company.Company;
 import pl.krzychuuweb.labelapp.initial.Initial;
+import pl.krzychuuweb.labelapp.product.Product;
 import pl.krzychuuweb.labelapp.role.Role;
 import pl.krzychuuweb.labelapp.template.Template;
 
@@ -42,6 +43,9 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Template> templates = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Product> products = new ArrayList<>();
 
     User() {
     }

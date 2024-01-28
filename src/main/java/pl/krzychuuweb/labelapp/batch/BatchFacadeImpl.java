@@ -2,7 +2,6 @@ package pl.krzychuuweb.labelapp.batch;
 
 import org.springframework.stereotype.Service;
 import pl.krzychuuweb.labelapp.batch.dto.BatchCreateDTO;
-import pl.krzychuuweb.labelapp.exception.BadRequestException;
 
 @Service
 class BatchFacadeImpl implements BatchFacade {
@@ -21,9 +20,9 @@ class BatchFacadeImpl implements BatchFacade {
 
     @Override
     public Batch create(final BatchCreateDTO batchCreateDTO) {
-        if (!batchQueryFacade.checkWhetherSerialIsNotUsed(batchCreateDTO.serial())) {
-            throw new BadRequestException("Such a serial number already exists");
-        }
+//        if (!batchQueryFacade.checkWhetherSerialIsNotUsed(batchCreateDTO.serial(), product)) {
+//            throw new BadRequestException("Such a serial number already exists");
+//        }
 
         return batchRepository.save(
                 batchFactory.createNewBatch(batchCreateDTO)

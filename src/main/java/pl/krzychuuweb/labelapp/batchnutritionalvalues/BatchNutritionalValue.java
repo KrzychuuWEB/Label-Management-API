@@ -1,9 +1,6 @@
 package pl.krzychuuweb.labelapp.batchnutritionalvalues;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import pl.krzychuuweb.labelapp.batch.Batch;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValue;
@@ -12,22 +9,22 @@ import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutrition
 @Table(name = "batches_nutritional_values")
 public class BatchNutritionalValue {
 
+    @EmbeddedId
     @ManyToOne
     @JoinColumn(name = "batch_id")
     private Batch batch;
 
+    @MapsId("nutritional_value_id")
     @ManyToOne
     @JoinColumn(name = "nutritional_value_id")
     private NutritionalValue nutritionalValue;
 
+    @MapsId("sub_nutritional_value_id")
     @ManyToOne
     @JoinColumn(name = "sub_nutritional_value_id")
     private SubNutritionalValue subNutritionalValue;
 
     private String value;
-
-    BatchNutritionalValue() {
-    }
 
     public Batch getBatch() {
         return batch;
