@@ -124,6 +124,7 @@ public class Batch {
         private LocalDate expirationDate;
         private boolean isShortDate;
         private String country;
+        private Product product;
 
         private BatchBuilder() {
         }
@@ -157,13 +158,19 @@ public class Batch {
             return this;
         }
 
+        public BatchBuilder withProduct(Product product) {
+            this.product = product;
+            return this;
+        }
+
         public Batch build() {
             Batch batch = new Batch();
             batch.setSerial(serial);
             batch.setExpirationDate(expirationDate);
             batch.setCountry(country);
-            batch.isShortDate = this.isShortDate;
+            batch.setProduct(product);
             batch.id = this.id;
+            batch.isShortDate = this.isShortDate;
             return batch;
         }
     }

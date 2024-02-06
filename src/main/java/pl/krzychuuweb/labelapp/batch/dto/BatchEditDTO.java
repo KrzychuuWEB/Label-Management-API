@@ -7,7 +7,9 @@ import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
 
-public record BatchCreateDTO(
+public record BatchEditDTO(
+        @NotNull
+        Long id,
 
         @NotBlank
         @NotNull
