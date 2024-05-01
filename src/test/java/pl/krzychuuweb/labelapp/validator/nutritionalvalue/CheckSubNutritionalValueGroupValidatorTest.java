@@ -6,14 +6,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.krzychuuweb.labelapp.batchnutritionalvalues.dto.BatchNutritionalValuesCreateDTO;
+import pl.krzychuuweb.labelapp.batchnutritionalmapping.dto.BatchNutritionalMappingCreateDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValueQueryFacade;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueUseDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValueQueryFacade;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -41,12 +40,12 @@ class CheckSubNutritionalValueGroupValidatorTest {
 
     @Test
     void should_return_true() {
-        BatchNutritionalValuesCreateDTO batchCreateDTO = new BatchNutritionalValuesCreateDTO(
+        BatchNutritionalMappingCreateDTO batchCreateDTO = new BatchNutritionalMappingCreateDTO(
                 List.of(
-                        new NutritionalValueUseDTO(1L, new BigDecimal("2"))
+                        new NutritionalValueUseDTO(1L, "2")
                 ),
                 List.of(
-                        new NutritionalValueUseDTO(1L, new BigDecimal("2"))
+                        new NutritionalValueUseDTO(1L, "2")
                 ));
 
         List<NutritionalValue> nutritionalValueList = List.of(
@@ -74,12 +73,12 @@ class CheckSubNutritionalValueGroupValidatorTest {
 
     @Test
     void should_return_false() {
-        BatchNutritionalValuesCreateDTO batchCreateDTO = new BatchNutritionalValuesCreateDTO(
+        BatchNutritionalMappingCreateDTO batchCreateDTO = new BatchNutritionalMappingCreateDTO(
                 List.of(
-                        new NutritionalValueUseDTO(1L, new BigDecimal("2"))
+                        new NutritionalValueUseDTO(1L, "2")
                 ),
                 List.of(
-                        new NutritionalValueUseDTO(1L, new BigDecimal("2"))
+                        new NutritionalValueUseDTO(1L, "2")
                 ));
 
         List<NutritionalValue> nutritionalValueList = List.of(

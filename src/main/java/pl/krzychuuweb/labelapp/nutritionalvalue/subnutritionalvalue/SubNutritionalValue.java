@@ -2,6 +2,7 @@ package pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue;
 
 import jakarta.persistence.*;
 import pl.krzychuuweb.labelapp.batch.Batch;
+import pl.krzychuuweb.labelapp.batchnutritionalmapping.BatchNutritionalMappingStrategy;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.Priority;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "sub_nutritional_values")
-public class SubNutritionalValue implements Priority {
+public class SubNutritionalValue implements Priority, BatchNutritionalMappingStrategy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

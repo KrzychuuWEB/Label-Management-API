@@ -3,7 +3,7 @@ package pl.krzychuuweb.labelapp.validator.nutritionalvalue;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.stereotype.Component;
-import pl.krzychuuweb.labelapp.batchnutritionalvalues.dto.BatchNutritionalValuesCreateDTO;
+import pl.krzychuuweb.labelapp.batchnutritionalmapping.dto.BatchNutritionalMappingCreateDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValueQueryFacade;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueUseDTO;
@@ -13,7 +13,7 @@ import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutrition
 import java.util.List;
 
 @Component
-class CheckSubNutritionalValueGroupValidator implements ConstraintValidator<CheckSubNutritionalValueGroup, BatchNutritionalValuesCreateDTO> {
+class CheckSubNutritionalValueGroupValidator implements ConstraintValidator<CheckSubNutritionalValueGroup, BatchNutritionalMappingCreateDTO> {
 
     private final NutritionalValueQueryFacade nutritionalValueQueryFacade;
 
@@ -25,9 +25,9 @@ class CheckSubNutritionalValueGroupValidator implements ConstraintValidator<Chec
     }
 
     @Override
-    public boolean isValid(final BatchNutritionalValuesCreateDTO batchNutritionalValuesCreateDTO, final ConstraintValidatorContext constraintValidatorContext) {
-        List<Long> nutritionalValuesId = batchNutritionalValuesCreateDTO.nutritionalValueIdList().stream().map(NutritionalValueUseDTO::id).toList();
-        List<Long> subNutritionalValuesId = batchNutritionalValuesCreateDTO.subNutritionalValueIdList().stream().map(NutritionalValueUseDTO::id).toList();
+    public boolean isValid(final BatchNutritionalMappingCreateDTO batchNutritionalMappingCreateDTO, final ConstraintValidatorContext constraintValidatorContext) {
+        List<Long> nutritionalValuesId = batchNutritionalMappingCreateDTO.nutritionalValueIdList().stream().map(NutritionalValueUseDTO::id).toList();
+        List<Long> subNutritionalValuesId = batchNutritionalMappingCreateDTO.subNutritionalValueIdList().stream().map(NutritionalValueUseDTO::id).toList();
 
         List<NutritionalValue> nutritionalValuesList = nutritionalValueQueryFacade.getAllByListId(nutritionalValuesId);
         List<SubNutritionalValue> subNutritionalValuesList = subNutritionalValueQueryFacade.getAllByListId(subNutritionalValuesId);

@@ -1,4 +1,4 @@
-package pl.krzychuuweb.labelapp.batchnutritionalvalues.dto;
+package pl.krzychuuweb.labelapp.batchnutritionalmapping.dto;
 
 
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueUseDTO;
@@ -7,7 +7,7 @@ import pl.krzychuuweb.labelapp.validator.nutritionalvalue.CheckSubNutritionalVal
 import java.util.List;
 
 @CheckSubNutritionalValueGroup
-public record BatchNutritionalValuesCreateDTO(
+public record BatchNutritionalMappingCreateDTO(
 
         List<NutritionalValueUseDTO> nutritionalValueIdList,
 

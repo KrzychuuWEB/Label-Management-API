@@ -3,6 +3,7 @@ package pl.krzychuuweb.labelapp.nutritionalvalue;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 import pl.krzychuuweb.labelapp.batch.Batch;
+import pl.krzychuuweb.labelapp.batchnutritionalmapping.BatchNutritionalMappingStrategy;
 import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValue;
 
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "nutritional_values")
-public class NutritionalValue implements Priority {
+public class NutritionalValue implements Priority, BatchNutritionalMappingStrategy {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
