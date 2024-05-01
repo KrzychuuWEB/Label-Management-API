@@ -40,10 +40,6 @@ public class Template implements BaseEntity, OwnershipEntity {
         return id;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -123,11 +119,11 @@ public class Template implements BaseEntity, OwnershipEntity {
 
         public Template build() {
             Template template = new Template();
-            template.setId(id);
             template.setName(name);
             template.setWidth(width);
             template.setHeight(height);
             template.setUser(user);
+            template.id = this.id;
             return template;
         }
     }

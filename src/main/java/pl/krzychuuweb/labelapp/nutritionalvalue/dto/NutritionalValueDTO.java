@@ -8,9 +8,13 @@ import java.util.List;
 
 public record NutritionalValueDTO(
         Long id,
+
         String name,
+
         Integer priority,
+
         List<SubNutritionalValueDTO> subNutritionalValueDTO,
+
         LocalDateTime createdAt
 ) {
     public static List<NutritionalValueDTO> mapNutritionalValueListToNutritionalValueDTO(List<NutritionalValue> nutritionalValues) {

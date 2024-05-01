@@ -1,12 +1,13 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue.dto;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record ChangeNutritionalValuePriorityDTO(
-        @NotNull
+        @NotBlank
         Long id,
-        @NotNull
+
+        @NotBlank
         @Min(1)
         Integer priority
 ) {

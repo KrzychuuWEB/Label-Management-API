@@ -8,22 +8,20 @@ import jakarta.validation.constraints.Size;
 import java.time.LocalDate;
 
 public record BatchEditDTO(
-        @NotNull
+        @NotBlank
         Long id,
 
         @NotBlank
-        @NotNull
         @Size(max = 40)
         String serial,
 
-        @NotNull
+        @NotBlank
         @Future(message = "Expiration date must be in the future")
         LocalDate expirationDate,
 
         @NotNull
         boolean isShortDate,
 
-        @NotNull
         @NotBlank
         @Size(max = 40)
         String country

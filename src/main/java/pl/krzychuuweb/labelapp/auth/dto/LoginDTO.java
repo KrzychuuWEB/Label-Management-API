@@ -1,6 +1,12 @@
 package pl.krzychuuweb.labelapp.auth.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
-public record LoginDTO(@NotNull String email, @NotNull String password) {
+public record LoginDTO(
+        @NotBlank
+        String email,
+
+        @NotBlank
+        String password
+) {
 }

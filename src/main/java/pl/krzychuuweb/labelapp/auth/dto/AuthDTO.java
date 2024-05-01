@@ -1,4 +1,9 @@
 package pl.krzychuuweb.labelapp.auth.dto;
 
-public record AuthDTO(String token) {
+import jakarta.validation.constraints.NotBlank;
+
+public record AuthDTO(
+        @NotBlank
+        String token
+) {
 }

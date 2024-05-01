@@ -34,10 +34,6 @@ public class SubNutritionalValue implements Priority {
         return id;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -105,10 +101,10 @@ public class SubNutritionalValue implements Priority {
 
         public SubNutritionalValue build() {
             SubNutritionalValue subNutritionalValue = new SubNutritionalValue();
-            subNutritionalValue.setId(id);
             subNutritionalValue.setName(name);
             subNutritionalValue.setPriority(priority);
             subNutritionalValue.setNutritionalValue(nutritionalValue);
+            subNutritionalValue.id = this.id;
             return subNutritionalValue;
         }
     }

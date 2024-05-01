@@ -39,10 +39,6 @@ public class NutritionalValue implements Priority {
         return id;
     }
 
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }
@@ -108,9 +104,9 @@ public class NutritionalValue implements Priority {
 
         public NutritionalValue build() {
             NutritionalValue nutritionalValue = new NutritionalValue();
-            nutritionalValue.setId(id);
             nutritionalValue.setName(name);
             nutritionalValue.setPriority(priority);
+            nutritionalValue.id = this.id;
             return nutritionalValue;
         }
     }

@@ -1,12 +1,12 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record EditNutritionalValueDTO(
-        @NotNull
+        @NotBlank
         Long id,
 
-        @NotNull
+        @NotBlank
         String name
 ) {
 }

@@ -1,13 +1,15 @@
 package pl.krzychuuweb.labelapp.company.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
 public record CompanyEditDTO(
-        @NotNull
+        @NotBlank
         Long id,
-        @NotNull
+
+        @NotBlank
         String name,
-        @NotNull
+
+        @NotBlank
         String footer
 ) {
 }

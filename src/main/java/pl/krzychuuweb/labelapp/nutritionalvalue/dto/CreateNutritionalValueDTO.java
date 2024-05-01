@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Size;
 public record CreateNutritionalValueDTO(
         @Size(min = 1, max = 80)
         String name,
+
         @Min(1)
         Integer priority
 ) {

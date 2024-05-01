@@ -1,15 +1,15 @@
 package pl.krzychuuweb.labelapp.user.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public record UserEditDTO(
-        @NotNull
+        @NotBlank
         Long id,
-        @NotNull
+        @NotBlank
         @Size(min = 1, max = 80)
         String firstName,
-        @NotNull
+        @NotBlank
         @Size(min = 1, max = 255)
         String email
 

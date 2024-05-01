@@ -7,7 +7,9 @@ import java.util.stream.Stream;
 
 public record SubNutritionalValueDTO(
         Long id,
+
         String name,
+
         Integer priority
 ) {
     public static List<SubNutritionalValueDTO> mapToSubNutritionalValueList(List<SubNutritionalValue> subNutritionalValueList) {

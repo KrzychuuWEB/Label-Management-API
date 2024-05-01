@@ -7,7 +7,7 @@ public record UserCreateDTO(
         String firstName,
         @Size(min = 1, max = 255)
         String email,
-        @Size(min = 8)
+        @Size(min = 8, max = 255)
         String password
 ) {
 }
