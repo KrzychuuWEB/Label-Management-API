@@ -7,18 +7,26 @@ import pl.krzychuuweb.labelapp.batchnutritionalmapping.dto.BatchNutritionalMappi
 import pl.krzychuuweb.labelapp.product.ProductOwnershipStrategy;
 import pl.krzychuuweb.labelapp.security.ownership.CheckOwnership;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 class BatchNutritionalMappingController {
 
-    @PostMapping("{productId}/batches/{batchId}/nutritional-values")
+    private final BatchNutritionalMappingFacade batchNutritionalMappingFacade;
+
+    BatchNutritionalMappingController(final BatchNutritionalMappingFacade batchNutritionalMappingFacade) {
+        this.batchNutritionalMappingFacade = batchNutritionalMappingFacade;
+    }
+
+    @PostMapping("{productId}/batches/{batchId}/nutritionals")
     @ResponseStatus(HttpStatus.CREATED)
     @CheckOwnership(ProductOwnershipStrategy.class)
-    BatchNutritionalMapping add(
+    List<BatchNutritionalMapping> add(
             @Valid @RequestBody BatchNutritionalMappingCreateDTO createDTO,
             @PathVariable Long productId,
             @PathVariable Long batchId
     ) {
-        return null;
+        return batchNutritionalMappingFacade.add(createDTO, batchId);
     }
 }

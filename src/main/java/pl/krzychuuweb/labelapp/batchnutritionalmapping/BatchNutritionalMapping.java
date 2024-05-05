@@ -14,12 +14,11 @@ public class BatchNutritionalMapping {
     @JoinColumn(name = "batch_id")
     private Batch batch;
 
-    @MapsId("nutritional_value_id")
+    @MapsId
     @ManyToOne
     @JoinColumn(name = "nutritional_value_id")
     private NutritionalValue nutritionalValue;
 
-    @MapsId("sub_nutritional_value_id")
     @ManyToOne
     @JoinColumn(name = "sub_nutritional_value_id")
     private SubNutritionalValue subNutritionalValue;

@@ -61,9 +61,11 @@ class BatchNutritionalMappingFacadeImpl implements BatchNutritionalMappingFacade
                 batchNutritionalMappingFactory.createBatchNutritional(nutritionalValues, createDTO.nutritionalValueIdList(), batch)
         );
 
-        nutritionalMappingList.addAll(
-                batchNutritionalMappingFactory.createBatchNutritional(subNutritionalValues, createDTO.subNutritionalValueIdList(), batch)
-        );
+        if (!createDTO.subNutritionalValueIdList().isEmpty()) {
+            nutritionalMappingList.addAll(
+                    batchNutritionalMappingFactory.createBatchNutritional(subNutritionalValues, createDTO.subNutritionalValueIdList(), batch)
+            );
+        }
 
         return batchNutritionalMappingRepository.saveAll(nutritionalMappingList);
     }

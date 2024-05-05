@@ -7,12 +7,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pl.krzychuuweb.labelapp.batch.Batch;
 import pl.krzychuuweb.labelapp.batch.BatchQueryFacade;
+import pl.krzychuuweb.labelapp.batch.BatchTestBuilder;
 import pl.krzychuuweb.labelapp.batchnutritionalmapping.dto.BatchNutritionalMappingCreateDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValueQueryFacade;
+import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValueTestBuilder;
 import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueUseDTO;
 import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValue;
 import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValueQueryFacade;
+import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValueTestBuilder;
 
 import java.util.List;
 
@@ -60,7 +63,7 @@ class BatchNutritionalMappingFacadeImplTest {
                         new NutritionalValueUseDTO(4L, "test4")
                 )
         );
-        Batch batch = Batch.BatchBuilder.aBatch().build();
+        Batch batch = BatchTestBuilder.aBatch().build();
         List<NutritionalValue> nutritionalValues = List.of(
                 NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(1L).build(),
                 NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(1L).build(),
@@ -99,47 +102,42 @@ class BatchNutritionalMappingFacadeImplTest {
                         new NutritionalValueUseDTO(4L, "test4")
                 )
         );
-        Batch batch = Batch.BatchBuilder.aBatch().withId(2L).build();
+        Batch batch = BatchTestBuilder.aBatch().build();
 
         when(batchNutritionalMappingQueryFacade.existsByBatchId(anyLong())).thenReturn(false);
         when(batchQueryFacade.getById(anyLong())).thenReturn(batch);
         when(nutritionalValueQueryFacade.getAllByListId(anyList())).thenReturn(getNutritionalValueList());
         when(subNutritionalValueQueryFacade.getAllByListId(anyList())).thenReturn(getSubNutritionalValueList());
         when(batchNutritionalMappingFactory.createBatchNutritional(anyList(), anyList(), any(Batch.class))).thenReturn(getBatchNutritionalMappingList(batch));
-        when(batchNutritionalMappingFactory.createBatchNutritional(anyList(), anyList(), any(Batch.class))).thenReturn(getBatchNutritionalMappingList(batch));
+        ;
         when(batchNutritionalMappingRepository.saveAll(anyList())).thenReturn(getBatchNutritionalMappingList(any(Batch.class)));
 
-        List<BatchNutritionalMapping> result = batchNutritionalMappingFacade.add(batchNutritionalMappingCreateDTO ,batch.getId());
+        List<BatchNutritionalMapping> result = batchNutritionalMappingFacade.add(batchNutritionalMappingCreateDTO, batch.getId());
 
-        assertThat(result.get(0).getNutritionalValue().getId()).isEqualTo(getNutritionalValueList().get(0).getId());
-
+        assertThat(result).hasSize(3);
     }
 
     private List<BatchNutritionalMapping> getBatchNutritionalMappingList(Batch batch) {
         return List.of(
                 BatchNutritionalMapping.BatchNutritionalMappingBuilder.aBatchNutritionalMapping().withBatch(batch).withNutritionalValue(getNutritionalValueList().get(0)).build(),
-                BatchNutritionalMapping.BatchNutritionalMappingBuilder.aBatchNutritionalMapping().withBatch(batch).withNutritionalValue(getNutritionalValueList().get(0)).build(),
+                BatchNutritionalMapping.BatchNutritionalMappingBuilder.aBatchNutritionalMapping().withBatch(batch).withNutritionalValue(getNutritionalValueList().get(1)).build(),
                 BatchNutritionalMapping.BatchNutritionalMappingBuilder.aBatchNutritionalMapping().withBatch(batch).withSubNutritionalValue(getSubNutritionalValueList().get(0)).build()
         );
     }
 
-    private List<Long> getIdsList() {
-        return List.of(1L, 2L, 3L);
-    }
-
     private List<NutritionalValue> getNutritionalValueList() {
         return List.of(
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(1L).build(),
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(2L).build(),
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(3L).build()
+                NutritionalValueTestBuilder.aNutritionalValue().withId(1L).build(),
+                NutritionalValueTestBuilder.aNutritionalValue().withId(2L).build(),
+                NutritionalValueTestBuilder.aNutritionalValue().withId(3L).build()
         );
     }
 
     private List<SubNutritionalValue> getSubNutritionalValueList() {
         return List.of(
-                SubNutritionalValue.SubNutritionalValueBuilder.aSubNutritionalValue().withId(1L).build(),
-                SubNutritionalValue.SubNutritionalValueBuilder.aSubNutritionalValue().withId(2L).build(),
-                SubNutritionalValue.SubNutritionalValueBuilder.aSubNutritionalValue().withId(3L).build()
+                SubNutritionalValueTestBuilder.aSubNutritionalValue().withId(1L).build(),
+                SubNutritionalValueTestBuilder.aSubNutritionalValue().withId(3L).build(),
+                SubNutritionalValueTestBuilder.aSubNutritionalValue().withId(2L).build()
         );
     }
 }
