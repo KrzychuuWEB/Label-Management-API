@@ -2,14 +2,10 @@ package pl.krzychuuweb.labelapp.batch;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import pl.krzychuuweb.labelapp.nutritionalvalue.NutritionalValue;
-import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValue;
 import pl.krzychuuweb.labelapp.product.Product;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @Table(name = "batches")
@@ -35,21 +31,21 @@ public class Batch {
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @ManyToMany
-    @JoinTable(
-            name = "batches_nutritional_values",
-            joinColumns = @JoinColumn(name = "batch_id"),
-            inverseJoinColumns = @JoinColumn(name = "nutritional_value_id")
-    )
-    private Set<NutritionalValue> nutritionalValues = new HashSet<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "batches_nutritional_values",
-            joinColumns = @JoinColumn(name = "batch_id"),
-            inverseJoinColumns = @JoinColumn(name = "sub_nutritional_value_id")
-    )
-    private Set<SubNutritionalValue> subNutritionalValues = new HashSet<>();
+//    @ManyToMany
+//    @JoinTable(
+//            name = "batches_nutritional_values",
+//            joinColumns = @JoinColumn(name = "batch_id"),
+//            inverseJoinColumns = @JoinColumn(name = "nutritional_value_id")
+//    )
+//    private Set<NutritionalValue> nutritionalValues = new HashSet<>();
+//
+//    @ManyToMany
+//    @JoinTable(
+//            name = "batches_nutritional_values",
+//            joinColumns = @JoinColumn(name = "batch_id"),
+//            inverseJoinColumns = @JoinColumn(name = "sub_nutritional_value_id")
+//    )
+//    private Set<SubNutritionalValue> subNutritionalValues = new HashSet<>();
 
     Batch() {
     }
@@ -94,21 +90,21 @@ public class Batch {
         return createdAt;
     }
 
-    public Set<NutritionalValue> getNutritionalValues() {
-        return nutritionalValues;
-    }
+//    public Set<NutritionalValue> getNutritionalValues() {
+//        return nutritionalValues;
+//    }
 
-    public void setNutritionalValues(final Set<NutritionalValue> nutritionalValues) {
-        this.nutritionalValues = nutritionalValues;
-    }
-
-    public Set<SubNutritionalValue> getSubNutritionalValues() {
-        return subNutritionalValues;
-    }
-
-    public void setSubNutritionalValues(final Set<SubNutritionalValue> subNutritionalValues) {
-        this.subNutritionalValues = subNutritionalValues;
-    }
+//    public void setNutritionalValues(final Set<NutritionalValue> nutritionalValues) {
+//        this.nutritionalValues = nutritionalValues;
+//    }
+//
+//    public Set<SubNutritionalValue> getSubNutritionalValues() {
+//        return subNutritionalValues;
+//    }
+//
+//    public void setSubNutritionalValues(final Set<SubNutritionalValue> subNutritionalValues) {
+//        this.subNutritionalValues = subNutritionalValues;
+//    }
 
     public Product getProduct() {
         return product;

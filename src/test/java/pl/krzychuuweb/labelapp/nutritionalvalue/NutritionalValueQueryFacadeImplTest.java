@@ -1,51 +1,32 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import pl.krzychuuweb.labelapp.exception.BadRequestException;
-import pl.krzychuuweb.labelapp.exception.NotFoundException;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+@ExtendWith(MockitoExtension.class)
 class NutritionalValueQueryFacadeImplTest {
 
-    @Autowired
+    @Mock
     private NutritionalValueQueryRepository nutritionalValueQueryRepository;
 
+    @InjectMocks
     private NutritionalValueQueryFacadeImpl nutritionalValueQueryFacade;
-
-    @BeforeEach
-    void setUp() {
-        nutritionalValueQueryRepository = mock(NutritionalValueQueryRepository.class);
-        nutritionalValueQueryFacade = new NutritionalValueQueryFacadeImpl(nutritionalValueQueryRepository);
-    }
-
-    @Test
-    void should_get_all_nutritional_values() {
-        List<NutritionalValue> nutritionalValues = new ArrayList<>();
-        nutritionalValues.add(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example1").withPriority(1).build());
-        nutritionalValues.add(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example2").withPriority(2).build());
-        nutritionalValues.add(NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example3").withPriority(3).build());
-
-        when(nutritionalValueQueryRepository.findAll()).thenReturn(nutritionalValues);
-
-        List<NutritionalValue> result = nutritionalValueQueryFacade.getAll();
-
-        assertThat(result).hasSize(nutritionalValues.size());
-    }
 
     @Test
     void should_get_nutritional_value_by_id() {
-        NutritionalValue nutritionalValue = NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withName("Example1").withPriority(1).build();
+        NutritionalValue nutritionalValue = NutritionalValueTestBuilder.aNutritionalValue().build();
 
         when(nutritionalValueQueryRepository.findById(anyLong())).thenReturn(Optional.of(nutritionalValue));
 
@@ -57,48 +38,25 @@ class NutritionalValueQueryFacadeImplTest {
     }
 
     @Test
-    void should_get_nutritional_value_by_id_expect_exception() {
+    void should_return_exception_for_nutritional_get_by_id_because_nutritional_value_not_exists() {
         when(nutritionalValueQueryRepository.findById(anyLong())).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> nutritionalValueQueryFacade.getById(anyLong())).isInstanceOf(NotFoundException.class);
+        assertThatThrownBy(() -> nutritionalValueQueryFacade.getById(anyLong())).isInstanceOf(BadRequestException.class);
     }
 
     @Test
-    void should_priority_has_been_used() {
-        when(nutritionalValueQueryRepository.existsByPriority(anyInt())).thenReturn(true);
-
-        assertThatThrownBy(() -> nutritionalValueQueryFacade.checkWhetherPriorityIsNotUsed(anyInt())).isInstanceOf(BadRequestException.class);
-    }
-
-    @Test
-    void should_get_all_by_priority_between_min_and_max() {
-        List<NutritionalValue> nutritionalValueList = List.of(
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(2).build(),
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(3).build(),
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(4).build()
+    void should_get_all_nutritional_values() {
+        List<NutritionalValue> list = List.of(
+                NutritionalValueTestBuilder.aNutritionalValue().build(),
+                NutritionalValueTestBuilder.aNutritionalValue().build(),
+                NutritionalValueTestBuilder.aNutritionalValue().build(),
+                NutritionalValueTestBuilder.aNutritionalValue().build()
         );
 
-        when(nutritionalValueQueryRepository.findAllByPriorityBetween(anyInt(), anyInt())).thenReturn(nutritionalValueList);
+        when(nutritionalValueQueryRepository.findAll()).thenReturn(list);
 
-        List<NutritionalValue> result = nutritionalValueQueryFacade.getAllByPriorityBetweenRange(anyInt(), anyInt());
+        List<NutritionalValue> result = nutritionalValueQueryFacade.getAll();
 
-        assertThat(result).hasSize(3);
-    }
-
-    @Test
-    void should_get_all_by_id() {
-        List<Long> idList = List.of(1L, 2L, 3L);
-
-        List<NutritionalValue> nutritionalValueList = List.of(
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(1L).build(),
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(2L).build(),
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withId(3L).build()
-        );
-
-        when(nutritionalValueQueryRepository.findAllById(any())).thenReturn(nutritionalValueList);
-
-        List<NutritionalValue> result = nutritionalValueQueryFacade.getAllByListId(idList);
-
-        assertThat(result).hasSameSizeAs(nutritionalValueList);
+        assertThat(result).hasSameSizeAs(list);
     }
 }

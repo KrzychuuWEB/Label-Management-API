@@ -2,18 +2,13 @@ package pl.krzychuuweb.labelapp.nutritionalvalue;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-import pl.krzychuuweb.labelapp.batch.Batch;
-import pl.krzychuuweb.labelapp.batchnutritionalmapping.BatchNutritionalMappingStrategy;
-import pl.krzychuuweb.labelapp.nutritionalvalue.subnutritionalvalue.SubNutritionalValue;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "nutritional_values")
-public class NutritionalValue implements Priority, BatchNutritionalMappingStrategy {
+public class NutritionalValue {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,17 +16,14 @@ public class NutritionalValue implements Priority, BatchNutritionalMappingStrate
 
     private String name;
 
-    private Integer priority;
+    private BigDecimal priority;
 
     @Column(updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "nutritionalValue")
-    private List<SubNutritionalValue> subNutritionalValues;
-
-    @ManyToMany(mappedBy = "nutritionalValues")
-    private Set<Batch> batches = new HashSet<>();
+    @Column(name = "is_deleted", columnDefinition = "boolean default false")
+    private boolean isDeleted;
 
     NutritionalValue() {
     }
@@ -48,11 +40,11 @@ public class NutritionalValue implements Priority, BatchNutritionalMappingStrate
         this.name = name;
     }
 
-    public Integer getPriority() {
+    public BigDecimal getPriority() {
         return priority;
     }
 
-    public void setPriority(final Integer priority) {
+    public void setPriority(final BigDecimal priority) {
         this.priority = priority;
     }
 
@@ -60,26 +52,18 @@ public class NutritionalValue implements Priority, BatchNutritionalMappingStrate
         return createdAt;
     }
 
-    public List<SubNutritionalValue> getSubNutritionalValues() {
-        return subNutritionalValues;
+    public boolean isDeleted() {
+        return isDeleted;
     }
 
-    public void setSubNutritionalValues(final List<SubNutritionalValue> subNutritionalValues) {
-        this.subNutritionalValues = subNutritionalValues;
-    }
-
-    public Set<Batch> getBatches() {
-        return batches;
-    }
-
-    public void setBatches(final Set<Batch> batches) {
-        this.batches = batches;
+    public void setDeleted(final boolean delete) {
+        isDeleted = delete;
     }
 
     public static final class NutritionalValueBuilder {
         private Long id;
         private String name;
-        private Integer priority;
+        private BigDecimal priority;
 
         private NutritionalValueBuilder() {
         }
@@ -98,7 +82,7 @@ public class NutritionalValue implements Priority, BatchNutritionalMappingStrate
             return this;
         }
 
-        public NutritionalValueBuilder withPriority(Integer priority) {
+        public NutritionalValueBuilder withPriority(BigDecimal priority) {
             this.priority = priority;
             return this;
         }

@@ -2,7 +2,9 @@ package pl.krzychuuweb.labelapp.nutritionalvalue;
 
 import java.util.List;
 
-public interface NutritionalValueQueryFacade extends PriorityQueryFacade<NutritionalValue> {
+public interface NutritionalValueQueryFacade {
 
-    List<NutritionalValue> getAllByListId(final List<Long> idList);
+    NutritionalValue getById(final Long id);
+
+    List<NutritionalValue> getAll();
 }

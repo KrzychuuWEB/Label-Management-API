@@ -1,13 +1,13 @@
 package pl.krzychuuweb.labelapp.nutritionalvalue;
 
-import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
-import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
+import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueCreateDTO;
+import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueEditDTO;
 
-public interface NutritionalValueFacade extends PriorityFacade<NutritionalValue> {
+public interface NutritionalValueFacade {
 
-    NutritionalValue add(final CreateNutritionalValueDTO createNutritionalValueDTO);
+    NutritionalValue create(final NutritionalValueCreateDTO nutritionalValueCreateDTO);
 
-    void delete(Long id);
+    NutritionalValue edit(final NutritionalValueEditDTO nutritionalValueEditDTO, final Long id);
 
-    NutritionalValue edit(final EditNutritionalValueDTO editNutritionalValueDTO);
+    void deleteById(final Long id);
 }

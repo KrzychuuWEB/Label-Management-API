@@ -2,13 +2,11 @@ package pl.krzychuuweb.labelapp.nutritionalvalue;
 
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import pl.krzychuuweb.labelapp.exception.BadRequestException;
-import pl.krzychuuweb.labelapp.nutritionalvalue.dto.ChangeNutritionalValuePriorityDTO;
-import pl.krzychuuweb.labelapp.nutritionalvalue.dto.CreateNutritionalValueDTO;
-import pl.krzychuuweb.labelapp.nutritionalvalue.dto.EditNutritionalValueDTO;
-import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueDTO;
+import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueCreateDTO;
+import pl.krzychuuweb.labelapp.nutritionalvalue.dto.NutritionalValueEditDTO;
 
 import java.util.List;
 
@@ -16,61 +14,44 @@ import java.util.List;
 @RequestMapping("/nutritional-values")
 class NutritionalValueController {
 
-    private final NutritionalValueQueryFacade nutritionalValueQueryFacade;
-
     private final NutritionalValueFacade nutritionalValueFacade;
 
-    NutritionalValueController(final NutritionalValueQueryFacade nutritionalValueQueryFacade, NutritionalValueFacade nutritionalValueFacade) {
-        this.nutritionalValueQueryFacade = nutritionalValueQueryFacade;
-        this.nutritionalValueFacade = nutritionalValueFacade;
-    }
+    private final NutritionalValueQueryFacade nutritionalValueQueryFacade;
 
-    @GetMapping
-    List<NutritionalValueDTO> getAll() {
-        return NutritionalValueDTO.mapNutritionalValueListToNutritionalValueDTO(
-                nutritionalValueQueryFacade.getAll()
-        );
+    NutritionalValueController(final NutritionalValueFacade nutritionalValueFacade, final NutritionalValueQueryFacade nutritionalValueQueryFacade) {
+        this.nutritionalValueFacade = nutritionalValueFacade;
+        this.nutritionalValueQueryFacade = nutritionalValueQueryFacade;
     }
 
     @PostMapping
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
-    NutritionalValueDTO create(@Valid @RequestBody CreateNutritionalValueDTO createNutritionalValueDTO) {
-        return NutritionalValueDTO.mapNutritionalValueToNutritionalValueDTO(
-                nutritionalValueFacade.add(createNutritionalValueDTO)
-        );
+    NutritionalValue create(@Valid @RequestBody NutritionalValueCreateDTO nutritionalValueCreateDTO) {
+        return nutritionalValueFacade.create(nutritionalValueCreateDTO);
+    }
+
+    @GetMapping
+    List<NutritionalValue> getAll() {
+        return nutritionalValueQueryFacade.getAll();
     }
 
     @PutMapping("/{id}")
-    @Secured("ROLE_ADMIN")
-    @ResponseStatus(HttpStatus.OK)
-    NutritionalValueDTO edit(@PathVariable Long id, @Valid @RequestBody EditNutritionalValueDTO editNutritionalValueDTO) {
-        if (!id.equals(editNutritionalValueDTO.id())) {
-            throw new BadRequestException("Id is not the same");
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    NutritionalValue edit(
+            @Valid @RequestBody NutritionalValueEditDTO nutritionalValueEditDTO,
+            @PathVariable Long id
+    ) {
+        if (!id.equals(nutritionalValueEditDTO.id())) {
+            throw new BadRequestException("The ids is not same");
         }
 
-        return NutritionalValueDTO.mapNutritionalValueToNutritionalValueDTO(
-                nutritionalValueFacade.edit(editNutritionalValueDTO)
-        );
-    }
-
-    @PutMapping("/{id}/priority")
-    @Secured("ROLE_ADMIN")
-    @ResponseStatus(HttpStatus.OK)
-    List<NutritionalValueDTO> editPriority(@PathVariable Long id, @Valid @RequestBody ChangeNutritionalValuePriorityDTO changeNutritionalValuePriorityDTO) {
-        if (!id.equals(changeNutritionalValuePriorityDTO.id())) {
-            throw new BadRequestException("Id is not the same");
-        }
-
-        return NutritionalValueDTO.mapNutritionalValueListToNutritionalValueDTO(
-                nutritionalValueFacade.editPriority(changeNutritionalValuePriorityDTO)
-        );
+        return nutritionalValueFacade.edit(nutritionalValueEditDTO, id);
     }
 
     @DeleteMapping("/{id}")
-    @Secured("ROLE_ADMIN")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    void delete(@PathVariable Long id) {
-        nutritionalValueFacade.delete(id);
+    void deleteById(@PathVariable Long id) {
+        nutritionalValueFacade.deleteById(id);
     }
 }
