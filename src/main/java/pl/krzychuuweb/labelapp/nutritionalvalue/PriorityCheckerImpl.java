@@ -3,7 +3,6 @@ package pl.krzychuuweb.labelapp.nutritionalvalue;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -54,6 +53,6 @@ class PriorityCheckerImpl implements PriorityChecker {
     }
 
     private BigDecimal changeIntegerToBigDecimalWithFractional(final int integer, final int fractional) {
-        return new BigDecimal(integer).add(new BigDecimal(fractional).divide(BigDecimal.TEN, RoundingMode.HALF_UP));
+        return new BigDecimal(integer).add(new BigDecimal(fractional).divide(new BigDecimal(10)));
     }
 }

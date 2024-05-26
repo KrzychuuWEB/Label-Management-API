@@ -105,11 +105,8 @@ class PriorityCheckerImplTest {
         );
 
         List<NutritionalValue> listForPriority2 = List.of(
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(new BigDecimal("2.2")).build()
-        );
-
-        List<NutritionalValue> listForPriority3 = List.of(
-                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(new BigDecimal("3.1")).build()
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(new BigDecimal("2.1")).build(),
+                NutritionalValue.NutritionalValueBuilder.aNutritionalValue().withPriority(new BigDecimal("2.3")).build()
         );
 
         when(prioritySort.getSortedChildrenPrioritiesFromList(anyList())).thenReturn(nutritionalValueList);
@@ -117,8 +114,6 @@ class PriorityCheckerImplTest {
                 .thenReturn(listForPriority1);
         when(prioritySort.getSortedNutritionalValueListWithFractionalPrioritiesByIntegerPriority(nutritionalValueList, 2))
                 .thenReturn(listForPriority2);
-        when(prioritySort.getSortedNutritionalValueListWithFractionalPrioritiesByIntegerPriority(nutritionalValueList, 3))
-                .thenReturn(listForPriority3);
 
         List<NutritionalValue> result = priorityChecker.checkChildrenPriorities(nutritionalValueList);
 

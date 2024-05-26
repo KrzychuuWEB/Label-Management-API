@@ -35,9 +35,3 @@ class PrioritySettingImpl implements PrioritySetting {
         return sortedList;
     }
 }
-
-//1. Sortowanie listy
-//2. Sprawdzić jakie elementy są złe
-//3. Wydzielić dwie tablice (z dobrymi priorytetami oraz ze złymi priorytetami)
-//4. Zmienić priorytety w złej tablicy na dobre
-//5. Połączyć tablice
